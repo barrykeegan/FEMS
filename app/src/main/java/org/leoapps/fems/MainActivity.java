@@ -1,5 +1,6 @@
 package org.leoapps.fems;
 
+import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -19,6 +20,11 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         FloatingActionButton fab = findViewById(R.id.fab);
+
+        //set for backgroundTint backwards compatability as per:
+        //https://stackoverflow.com/questions/27735890/lollipops-backgroundtint-has-no-effect-on-a-button/29756195#29756195
+        fab.setBackgroundTintList(new ColorStateList(new int[][]{new int[0]}, new int[]{R.color.colorSecondary}));
+
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
