@@ -2,4 +2,5 @@
     <string name="app_name">FEMS</string>
     <string name="lbl_activity_case_list">FEMS - Cases</string>
     <string name="action_settings">Settings</string>
+    <string name="action_case_types">Case Type Administration</string>
 </resources>

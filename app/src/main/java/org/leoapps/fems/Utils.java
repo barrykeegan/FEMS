@@ -7,8 +7,14 @@ public class Utils {
     //cannot obtain their own app context
     public static Context appContext;
     //Used to hold a static reference to the Room database for use throughout entire app
-    //public static AppDatabase database;
+    public static AppDatabase database;
 
-
+    public static void clearDB()
+    {
+        database.photographDAO().removeAllPhotographs();
+        database.exhibitDAO().removeAllExhibits();
+        database.caseDAO().removeAllCases();
+        database.caseTypeDAO().removeAllCaseTypes();
+    }
 
 }

@@ -32,6 +32,8 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+
+        Utils.database.caseTypeDAO().getAllCaseTypes();
     }
 
     @Override

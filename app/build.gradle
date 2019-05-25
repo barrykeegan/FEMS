@@ -36,4 +36,6 @@ dependencies {
     implementation "android.arch.persistence.room:runtime:$lifecycle_version"
     annotationProcessor "android.arch.lifecycle:compiler:$lifecycle_version"
     annotationProcessor "android.arch.persistence.room:compiler:$lifecycle_version"
+
+    debugImplementation 'com.amitshekhar.android:debug-db:1.0.6'
 }
