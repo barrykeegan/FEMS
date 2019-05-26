@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_validation_message"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textColor="#f00"
+            android:fontFamily="sans-serif-black"
+            android:textSize="16sp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:text="Your Case Reference:"
+            android:textColor="@color/colorSecondaryDark"
+            android:fontFamily="sans-serif-black"
+            android:textSize="16sp"/>
+        <EditText
+            android:id="@+id/et_add_case_internal_ref"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="10dp"/>
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:text="External Case Reference:"
+            android:textColor="@color/colorSecondaryDark"
+            android:fontFamily="sans-serif-black"
+            android:textSize="16sp"/>
+        <EditText
+            android:id="@+id/et_add_case_external_ref"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="10dp"/>
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:text="Case Type"
+            android:textColor="@color/colorSecondaryDark"
+            android:fontFamily="sans-serif-black"
+            android:textSize="16sp"/>
+
+        <Spinner
+            android:id="@+id/spnr_add_case_type"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="10dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:text="Incident / Search Date"
+            android:textColor="@color/colorSecondaryDark"
+            android:fontFamily="sans-serif-black"
+            android:textSize="16sp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <EditText
+                    android:id="@+id/et_add_case_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:inputType="date"
+                    android:focusable="false"
+                    android:layout_marginLeft="20dp"
+                    android:layout_weight="2"/>
+
+                <Button
+                    android:id="@+id/btn_add_case_date_picker"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:background="@color/colorAccent"
+                    android:text="Choose Date"
+                    android:textColor="#fff"
+                    android:layout_weight="1"/>
+
+            </LinearLayout>
+
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:text="Incident / Search Location"
+            android:textColor="@color/colorSecondaryDark"
+            android:fontFamily="sans-serif-black"
+            android:textSize="16sp"/>
+
+        <EditText
+            android:id="@+id/et_add_case_location"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="10dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:text="Operation Name"
+            android:textColor="@color/colorSecondaryDark"
+            android:fontFamily="sans-serif-black"
+            android:textSize="16sp"/>
+
+        <EditText
+            android:id="@+id/et_add_case_operation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="10dp"/>
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp">
+            <Button
+                android:id="@+id/btn_add_case_add"
+                android:layout_width="wrap_content"
+                android:layout_height="44dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:background="@color/colorAccent"
+                android:textColor="#fff"
+                android:text="Add Case"/>
+            <Button
+                android:id="@+id/btn_add_case_discard"
+                android:layout_width="wrap_content"
+                android:layout_height="44dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:background="@color/colorAccent"
+                android:textColor="#fff"
+                android:text="Discard"/>
+        </LinearLayout>
+    </LinearLayout>
+
+</ScrollView>

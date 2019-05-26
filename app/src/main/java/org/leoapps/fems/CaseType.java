@@ -2,47 +2,48 @@ package org.leoapps.fems;
 
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 @Entity(tableName = "casetypes")
 public class CaseType {
     public static final String TAG = "CaseType";
 
-    @PrimaryKey(autoGenerate = true)
-    public int ID;
-    public String CaseType;
+    @PrimaryKey
+    @NonNull
+    public String Type;
 
-    CaseType (int ID, String CaseType)
+    CaseType (String Type)
     {
-        this.ID = ID;
-        this.CaseType = CaseType;
+        this.Type = Type;
     }
 
     //Will only be called on initial creation of DB
     public static CaseType[] populateCaseTypes() {
         Log.i(TAG, "In Populate Case Types");
         return new CaseType[]{
-                new CaseType(0, "Other"),
-                new CaseType(0, "Public Order"),
-                new CaseType(0, "Road Traffic"),
-                new CaseType(0, "Theft"),
-                new CaseType(0, "Firearms and Offensive Weapons"),
-                new CaseType(0, "Criminal Damage"),
-                new CaseType(0, "Fraud"),
-                new CaseType(0, "Arson"),
-                new CaseType(0, "Drugs"),
-                new CaseType(0, "Assault"),
-                new CaseType(0, "Kidnapping"),
-                new CaseType(0, "Burglary"),
-                new CaseType(0, "Cyber Crime"),
-                new CaseType(0, "Affray / Riot / Violent Disorder"),
-                new CaseType(0, "Robbery"),
-                new CaseType(0, "Harassment"),
-                new CaseType(0, "Domestic"),
-                new CaseType(0, "Aggravated Burglary"),
-                new CaseType(0, "Terrorism and Offences Against the State"),
-                new CaseType(0, "Sexual Offences"),
-                new CaseType(0, "Murder")
+                new CaseType("Other"),
+                new CaseType("Child Exploitation"),
+                new CaseType("Fraud"),
+                new CaseType("Sexual Offences"),
+                new CaseType("Murder"),
+                new CaseType("Terrorism and Offences Against the State"),
+                new CaseType("Cyber Crime"),
+                new CaseType("Theft"),
+                new CaseType("Public Order"),
+                new CaseType("Road Traffic"),
+                new CaseType("Firearms and Offensive Weapons"),
+                new CaseType("Criminal Damage"),
+                new CaseType("Arson"),
+                new CaseType("Drugs"),
+                new CaseType("Assault"),
+                new CaseType("Kidnapping"),
+                new CaseType("Burglary"),
+                new CaseType("Affray / Riot / Violent Disorder"),
+                new CaseType("Robbery"),
+                new CaseType("Harassment"),
+                new CaseType("Domestic"),
+                new CaseType("Aggravated Burglary")
         };
     }
 }

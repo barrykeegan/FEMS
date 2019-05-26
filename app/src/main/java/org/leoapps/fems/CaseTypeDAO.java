@@ -16,8 +16,8 @@ public interface CaseTypeDAO {
     @Insert
     void addAllCaseTypes(CaseType... caseTypes);
 
-    @Query("SELECT * FROM casetypes WHERE ID = :ID")
-    CaseType getCaseType(long ID);
+    @Query("SELECT * FROM casetypes WHERE Type = :Type")
+    CaseType getCaseType(String Type);
 
     @Query("SELECT * FROM casetypes")
     List<CaseType> getAllCaseTypes();
@@ -25,8 +25,8 @@ public interface CaseTypeDAO {
     @Update(onConflict = OnConflictStrategy.REPLACE)
     void updateCaseType(CaseType caseType);
 
-    @Query("DELETE FROM casetypes WHERE ID = :ID")
-    void deleteCaseType(long ID);
+    @Query("DELETE FROM casetypes WHERE Type = :Type")
+    void deleteCaseType(String Type);
 
     @Query("DELETE FROM casetypes")
     void removeAllCaseTypes();

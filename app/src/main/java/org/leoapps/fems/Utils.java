@@ -9,6 +9,8 @@ public class Utils {
     //Used to hold a static reference to the Room database for use throughout entire app
     public static AppDatabase database;
 
+    public static String[] CaseTypes = null;
+
     public static void clearDB()
     {
         database.photographDAO().removeAllPhotographs();
