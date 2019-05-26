@@ -9,99 +9,112 @@
     app:cardElevation="3dp">
 
     <LinearLayout
-        android:id="@+id/ll_case_list_detail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/tv_case_list_reference"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/colorSecondary"
-                android:textSize="24sp"
-                android:fontFamily="sans-serif-black"/>
-            <TextView
-                android:id="@+id/tv_case_list_operation"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:gravity="right"
-                android:textColor="@color/colorSecondary"
-                android:textSize="24sp"
-                android:fontFamily="sans-serif-black"/>
-
-        </LinearLayout>
-        <View
-            android:layout_width="fill_parent"
-            android:layout_height="2dp"
-            android:background="@color/colorPrimaryDark"
-            android:layout_marginTop="8dp"/>
-
-
         <TextView
-            android:id="@+id/tv_case_list_type"
+            android:id="@+id/tv_case_list_case_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="invisible"/>
+        <LinearLayout
+            android:id="@+id/ll_case_list_detail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:textSize="20sp"
-            android:textColor="#000"/>
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:orientation="horizontal">
+
+
+                <TextView
+                    android:id="@+id/tv_case_list_reference"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorSecondary"
+                    android:textSize="24sp"
+                    android:fontFamily="sans-serif-black"/>
+                <TextView
+                    android:id="@+id/tv_case_list_operation"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="right"
+                    android:textColor="@color/colorSecondary"
+                    android:textSize="24sp"
+                    android:fontFamily="sans-serif-black"/>
+
+            </LinearLayout>
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="2dp"
+                android:background="@color/colorPrimaryDark"
+                android:layout_marginTop="8dp"/>
+
+
+            <TextView
+                android:id="@+id/tv_case_list_type"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:textSize="20sp"
+                android:textColor="#000"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_case_list_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:textSize="20sp"
+                    android:textColor="#000"/>
+                <TextView
+                    android:id="@+id/tv_case_list_location"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="right"
+                    android:layout_marginBottom="10dp"
+                    android:textSize="20sp"
+                    android:textColor="#000"/>
+            </LinearLayout>
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="2dp"
+                android:background="@color/colorPrimaryDark"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"/>
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/tv_case_list_date"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:textSize="20sp"
-                android:textColor="#000"/>
-            <TextView
-                android:id="@+id/tv_case_list_location"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:gravity="right"
-                android:layout_marginBottom="10dp"
-                android:textSize="20sp"
-                android:textColor="#000"/>
-        </LinearLayout>
-
-        <View
-            android:layout_width="fill_parent"
-            android:layout_height="2dp"
-            android:background="@color/colorPrimaryDark"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"/>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:orientation="horizontal"
-            android:id="@+id/ll_share_info">
 
             <ImageView
+                android:id="@+id/img_case_list_share_case"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 app:srcCompat="@drawable/ic_baseline_share_24px"
                 android:contentDescription="Share Icon"
                 android:layout_weight="1"/>
             <ImageView
+                android:id="@+id/img_case_list_edit_case"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 app:srcCompat="@drawable/baseline_edit_24"
                 android:contentDescription="Edit Icon"
                 android:layout_weight="1"/>
             <ImageView
+                android:id="@+id/img_case_list_delete_case"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 app:srcCompat="@drawable/baseline_delete_outline_24"
@@ -109,73 +122,6 @@
                 android:layout_weight="1"/>
         </LinearLayout>
 
-
-            <!-- the rest below here is reserved for icons for share, edit and delete
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="44dp"
-                android:layout_marginBottom="10dp"
-                android:orientation="horizontal">
-                <ImageView
-                    android:id="@+id/iv_lecturer_avatar"
-                    android:layout_width="44dp"
-                    android:layout_height="44dp"
-                    android:layout_marginRight="10dp"/>
-                <TextView
-                    android:id="@+id/tv_lecturer_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"/>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:weightSum="1.0"
-                android:orientation="horizontal">
-                <TextView
-                    android:id="@+id/tv_start_date"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.5"/>
-                <TextView
-                    android:id="@+id/tv_end_date"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.5"
-                    android:gravity="right"/>
-            </LinearLayout>
-
-            <View
-                android:layout_width="fill_parent"
-                android:layout_height="2dp"
-                android:background="#000"
-                android:layout_marginTop="8dp"/>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:layout_marginLeft="10dp"
-            android:orientation="horizontal"
-            android:id="@+id/ll_share_info">
-
-            <ImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:src="@drawable/ic_baseline_share_24px"
-                />
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:text="@string/share_module"
-                android:textColor="@color/colorPrimary"/>
-        </LinearLayout>-->
-
     </LinearLayout>
-
 
 </android.support.v7.widget.CardView>
