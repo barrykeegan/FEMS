@@ -9,14 +9,6 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/tv_validation_message"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text=""
-            android:textColor="#f00"
-            android:fontFamily="sans-serif-black"
-            android:textSize="16sp"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -31,7 +23,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
-            android:layout_marginRight="10dp"/>
+            android:layout_marginRight="10dp"
+            android:inputType="textCapCharacters"
+            android:maxLines="1"/>
 
 
         <TextView
@@ -47,7 +41,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
-            android:layout_marginRight="10dp"/>
+            android:layout_marginRight="10dp"
+            android:inputType="text"
+            android:maxLines="1"/>
 
 
         <TextView
@@ -117,7 +113,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
-            android:layout_marginRight="10dp"/>
+            android:layout_marginRight="10dp"
+            android:inputType="text"
+            android:maxLines="1"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -133,7 +131,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
-            android:layout_marginRight="10dp"/>
+            android:layout_marginRight="10dp"
+            android:inputType="text"
+            android:maxLines="1"/>
 
 
 

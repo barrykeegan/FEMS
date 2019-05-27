@@ -1,8 +1,10 @@
 package org.leoapps.fems;
 
 import android.app.DatePickerDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.service.autofill.RegexValidator;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -32,7 +34,7 @@ public class AddCase extends AppCompatActivity  implements  DatePickerDialog.OnD
     private Button btnAddCase;
     private Button btnDiscard;
     private Button btnDatePicker;
-    private TextView tvValidationMessage;
+    private String currentDate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,37 +50,26 @@ public class AddCase extends AppCompatActivity  implements  DatePickerDialog.OnD
         btnAddCase = findViewById(R.id.btn_add_case_add);
         btnDiscard = findViewById(R.id.btn_add_case_discard);
         btnDatePicker = findViewById(R.id.btn_add_case_date_picker);
-        tvValidationMessage = findViewById(R.id.tv_validation_message);
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, Utils.CaseTypes);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spnrCaseType.setAdapter(adapter);
 
-        String currentDate = new SimpleDateFormat("dd/MM/yyyy").format(new Date());
+        currentDate = new SimpleDateFormat("dd/MM/yyyy").format(new Date());
 
         etCaseDate.setText(currentDate);
 
         btnDiscard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                backToCaseList();
+                verifyDiscard();
             }
         });
 
         btnAddCase.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Case newCase = new Case(
-                        0,
-                        etLocalReference.getText().toString(),
-                        etExternalReference.getText().toString(),
-                        spnrCaseType.getSelectedItem().toString(),
-                        etCaseDate.getText().toString(),
-                        etLocation.getText().toString(),
-                        etOperation.getText().toString()
-                );
-                Utils.database.caseDAO().addCase(newCase);
-                backToCaseList();
+                addCase();
             }
         });
 
@@ -127,6 +118,49 @@ public class AddCase extends AppCompatActivity  implements  DatePickerDialog.OnD
             strDay = Integer.toString(dayOfMonth);
         }
         etCaseDate.setText(strDay + "/" + strMonth + "/" + strYear);
+    }
+
+    private void addCase()
+    {
+        Case newCase = new Case(
+                0,
+                etLocalReference.getText().toString(),
+                etExternalReference.getText().toString(),
+                spnrCaseType.getSelectedItem().toString(),
+                etCaseDate.getText().toString(),
+                etLocation.getText().toString(),
+                etOperation.getText().toString()
+        );
+        Utils.database.caseDAO().addCase(newCase);
+        backToCaseList();
+    }
+
+    private void verifyDiscard()
+    {
+        if(etLocalReference.getText().toString().isEmpty() &&
+           etExternalReference.getText().toString().isEmpty() &&
+           spnrCaseType.getSelectedItem().toString().equals("Other") &&
+           etCaseDate.getText().toString().equals(currentDate) &&
+           etLocation.getText().toString().isEmpty() &&
+           etOperation.getText().toString().isEmpty() )
+        {
+            backToCaseList();
+        }
+        else
+        {
+            //https://stackoverflow.com/questions/5127407/how-to-implement-a-confirmation-yes-no-dialogpreference
+            new AlertDialog.Builder(this)
+                    .setTitle("Confirm Discart")
+                    .setMessage("Do you really want to discard your changes?")
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+
+                        public void onClick(DialogInterface dialog, int whichButton) {
+                            backToCaseList();
+                        }})
+                    .setNegativeButton(android.R.string.no, null).show();
+        }
+
     }
 
     private void backToCaseList()
