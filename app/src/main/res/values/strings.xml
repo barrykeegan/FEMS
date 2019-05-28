@@ -4,5 +4,7 @@
     <string name="action_settings">Settings</string>
     <string name="action_case_types">Case Type Administration</string>
     <string name="lbl_activity_add_case">FEMS - Add New Case</string>
+    <string name="lbl_activity_update_case">FEMS - Update Case</string>
     <string name="value_not_set">Not Set</string>
+
 </resources>

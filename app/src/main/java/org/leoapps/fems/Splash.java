@@ -19,21 +19,7 @@ public class Splash extends Activity {
         setContentView(R.layout.activity_splash);
 
         Log.i(TAG, "In Splash Activity onCreate");
-
-        Utils.appContext = getApplicationContext();
-        Utils.database = AppDatabase.getDatabase(getApplicationContext());
-
-        Log.i(TAG, "In Splash Activity - set up reference to DB");
-
-        List<CaseType> caseTypes = Utils.database.caseTypeDAO().getAllCaseTypes();
-
-        Utils.CaseTypes = new String[caseTypes.size()];
-
-        for (int i = 0; i < caseTypes.size(); i++)
-        {
-            Utils.CaseTypes[i] = caseTypes.get(i).Type;
-        }
-
+        Utils.initialiseUtilsProperties(getApplicationContext());
     }
 
     @Override

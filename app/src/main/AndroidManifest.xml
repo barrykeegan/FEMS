@@ -9,8 +9,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".AddCase"
-            android:label="@string/lbl_activity_add_case"></activity>
+        <activity
+            android:name=".UpdateCase"
+            android:label="@string/lbl_activity_update_case"></activity>
+        <activity
+            android:name=".AddCase"
+            android:label="@string/lbl_activity_add_case" />
         <activity android:name=".Splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -21,7 +25,7 @@
         <activity
             android:name=".MainActivity"
             android:label="@string/lbl_activity_case_list"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>
