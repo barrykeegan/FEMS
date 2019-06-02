@@ -9,12 +9,23 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".ExhibitDetails"></activity>
+        <activity
+            android:name=".UpdateExhibit"
+            android:label="@string/title_activity_update_exhibit" />
+        <activity
+            android:name=".AddExhibit"
+            android:label="@string/title_activity_add_exhibit" />
+        <activity
+            android:name=".CaseDetails"
+            android:label="@string/title_activity_case_details"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".UpdateCase"
-            android:label="@string/lbl_activity_update_case"></activity>
+            android:label="@string/title_activity_update_case" />
         <activity
             android:name=".AddCase"
-            android:label="@string/lbl_activity_add_case" />
+            android:label="@string/title_activity_add_case" />
         <activity android:name=".Splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,7 +35,7 @@
         </activity>
         <activity
             android:name=".MainActivity"
-            android:label="@string/lbl_activity_case_list"
+            android:label="@string/title_activity_case_list"
             android:theme="@style/AppTheme.NoActionBar" />
     </application>
 

@@ -141,7 +141,7 @@ public class UpdateCase extends AppCompatActivity  implements  DatePickerDialog.
         caseToUpdate.OperationName = etOperation.getText().toString();
 
         Utils.database.caseDAO().updateCase(caseToUpdate);
-        backToCaseList();
+        backToPrevActivity();
     }
 
     private void verifyDiscard()
@@ -156,7 +156,7 @@ public class UpdateCase extends AppCompatActivity  implements  DatePickerDialog.
                 etLocation.getText().toString().equals(caseToUpdate.Location) &&
                 etOperation.getText().toString().equals(caseToUpdate.OperationName) )
         {
-            backToCaseList();
+            backToPrevActivity();
         }
         else
         {
@@ -168,16 +168,26 @@ public class UpdateCase extends AppCompatActivity  implements  DatePickerDialog.
                     .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
 
                         public void onClick(DialogInterface dialog, int whichButton) {
-                            backToCaseList();
+                            backToPrevActivity();
                         }})
                     .setNegativeButton(android.R.string.no, null).show();
         }
 
     }
 
-    private void backToCaseList()
+    private void backToPrevActivity()
     {
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent;
+        if(getIntent().getStringExtra("From").equals("CaseList"))
+        {
+            intent = new Intent(this, MainActivity.class);
+        }
+        else
+        {
+            intent = new Intent(this, CaseDetails.class);
+            intent.putExtra("CaseID", Integer.toString(caseToUpdate.ID));
+        }
+
         this.startActivity(intent);
         this.finish();
     }

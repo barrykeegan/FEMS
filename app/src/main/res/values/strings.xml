@@ -1,10 +1,16 @@
 <resources>
     <string name="app_name">FEMS</string>
-    <string name="lbl_activity_case_list">FEMS - Cases</string>
+    <string name="title_activity_case_list">FEMS - Cases</string>
     <string name="action_settings">Settings</string>
     <string name="action_case_types">Case Type Administration</string>
-    <string name="lbl_activity_add_case">FEMS - Add New Case</string>
-    <string name="lbl_activity_update_case">FEMS - Update Case</string>
+    <string name="title_activity_add_case">FEMS - Add New Case</string>
+    <string name="title_activity_add_exhibit">FEMS - Add New Exhibit</string>
+    <string name="title_activity_update_case">FEMS - Update Case</string>
+    <string name="title_activity_update_exhibit">FEMS - Update Exhibit</string>
     <string name="value_not_set">Not Set</string>
-
+    <string name="title_activity_case_details">FEMS - Case Details</string>
+    <string name="lbl_case_details_external_reference">External Reference</string>
+    <string name="lbl_case_details_case_type">Case Type</string>
+    <string name="lbl_case_details_case_location">Incident/Search Location</string>
+    <string name="lbl_case_details_case_date">Incident/Search Date</string>
 </resources>
