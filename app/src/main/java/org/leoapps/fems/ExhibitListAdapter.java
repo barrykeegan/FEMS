@@ -2,6 +2,8 @@ package org.leoapps.fems;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
+import android.media.ThumbnailUtils;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
@@ -124,54 +126,16 @@ public class ExhibitListAdapter extends RecyclerView.Adapter<ExhibitListAdapter.
         holder.tvCaseListID.setText(Integer.toString(exhibit.CaseID));
         holder.tvExhibitListID.setText(Integer.toString(exhibit.ID));
 
+        List<Photograph> photos = Utils.database.photographDAO().getPhotographsForExhibit(exhibit.ID);
+        if(photos.size()>0)
+        {
+            holder.ivExhibitThumbnail.setImageBitmap(ThumbnailUtils.extractThumbnail(BitmapFactory.decodeFile(photos.get(0).FileLocation), 80, 80));
+        }
+
         holder.tvExhibitLocalID.setText(exhibit.LocalExhibitID);
         holder.tvExhibitExternalID.setText(exhibit.ExternalExhibitID);
         holder.tvExhibitDescription.setText(exhibit.Description);
 
-        /*if(aCase.ReferenceID == null || aCase.ReferenceID.isEmpty())
-        {
-            holder.caseListReference.setText(R.string.value_not_set);
-        }
-        else
-        {
-            holder.caseListReference.setText(aCase.ReferenceID);
-        }
-
-        if(aCase.OperationName == null || aCase.OperationName.isEmpty())
-        {
-            holder.caseListOperation.setText(R.string.value_not_set);
-        }
-        else
-        {
-            holder.caseListOperation.setText(aCase.OperationName);
-        }
-
-        if(aCase.CaseType == null || aCase.CaseType.isEmpty())
-        {
-            holder.caseListType.setText(R.string.value_not_set);
-        }
-        else
-        {
-            holder.caseListType.setText(aCase.CaseType);
-        }
-
-        if(aCase.CaseDate == null || aCase.CaseDate.isEmpty())
-        {
-            holder.caseListDate.setText(R.string.value_not_set);
-        }
-        else
-        {
-            holder.caseListDate.setText(aCase.CaseDate);
-        }
-
-        if(aCase.Location == null || aCase.Location.isEmpty())
-        {
-            holder.caseListLocation.setText(R.string.value_not_set);
-        }
-        else
-        {
-            holder.caseListLocation.setText(aCase.Location);
-        }*/
     }
 
     @Override

@@ -36,6 +36,20 @@ import java.util.List;
 //https://developer.android.com/guide/topics/media/camera.html#custom-camera
 
 public class TakePhoto extends AppCompatActivity {
+    public final static int CAMERA_PERMISSION = 1;
+    public final static int STORAGE_PERMISSION = 1;
+    protected static final int MEDIA_TYPE_IMAGE = 1;
+    private static final int TOP_LEFT = 0;
+    private static final int TOP = 1;
+    private static final int TOP_RIGHT = 2;
+    private static final int LEFT = 3;
+    private static final int CENTRE = 4;
+    private static final int RIGHT = 5;
+    private static final int BOTTOM_LEFT = 6;
+    private static final int BOTTOM = 7;
+    private static final int BOTTOM_RIGHT = 8;
+
+    private int currPosition = TOP_LEFT;
     private Camera camera;
     private CameraPreview mPreview;
     private FrameLayout flCameraPreview;
@@ -44,10 +58,7 @@ public class TakePhoto extends AppCompatActivity {
     private int exhibitID;
     private String exhibitRef;
 
-    private static final float FOCUS_AREA_SIZE = 75f;
-    public final static int CAMERA_PERMISSION = 1;
-    public final static int STORAGE_PERMISSION = 1;
-    protected static final int MEDIA_TYPE_IMAGE = 1;
+
     private final static String TAG = "TakePhoto - ";
 
     @Override

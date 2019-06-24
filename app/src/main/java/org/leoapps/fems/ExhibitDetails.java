@@ -131,8 +131,6 @@ public class ExhibitDetails extends AppCompatActivity {
             }
         });
 
-        displayPhotoList();
-
     }
 
     @Override

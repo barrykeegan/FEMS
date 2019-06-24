@@ -107,7 +107,11 @@ public class CaseDetails extends AppCompatActivity {
                 v.getContext().startActivity(toUpdateCase);
             }
         });
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
         displayExhibitList();
     }
 
