@@ -9,6 +9,8 @@ import android.graphics.RectF;
 import android.hardware.Camera;
 import android.net.Uri;
 import android.os.Environment;
+import android.support.constraint.ConstraintLayout;
+import android.support.constraint.ConstraintSet;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -17,7 +19,9 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,10 +39,11 @@ import java.util.List;
 //For this activity I have borrowed heavily from the android developer documents
 //https://developer.android.com/guide/topics/media/camera.html#custom-camera
 
-public class TakePhoto extends AppCompatActivity {
+public class TakePhoto extends AppCompatActivity implements View.OnClickListener {
     public final static int CAMERA_PERMISSION = 1;
     public final static int STORAGE_PERMISSION = 1;
     protected static final int MEDIA_TYPE_IMAGE = 1;
+
     private static final int TOP_LEFT = 0;
     private static final int TOP = 1;
     private static final int TOP_RIGHT = 2;
@@ -49,13 +54,35 @@ public class TakePhoto extends AppCompatActivity {
     private static final int BOTTOM = 7;
     private static final int BOTTOM_RIGHT = 8;
 
+    private Button ibTopLeft;
+    private Button ibTop;
+    private Button ibTopRight;
+    private Button ibLeft;
+    private Button ibCentre;
+    private Button ibRight;
+    private Button ibBottomLeft;
+    private Button ibBottom;
+    private Button ibBottomRight;
+
+    private CheckBox cbTS;
+    private CheckBox cbEID;
+
+    private TextView tvOverlay;
+
     private int currPosition = TOP_LEFT;
+    private boolean displayOverlay = true;
+    private boolean displayTimestamp = true;
+    private boolean displayExhibitID = true;
+
     private Camera camera;
     private CameraPreview mPreview;
     private FrameLayout flCameraPreview;
     private Button btnTakePhoto;
 
+    private ConstraintLayout csPreview;
+
     private int exhibitID;
+    private String filePrefix;
     private String exhibitRef;
 
 
@@ -78,8 +105,37 @@ public class TakePhoto extends AppCompatActivity {
 
 
         exhibitID = getIntent().getIntExtra("ExhibitID", -1);
-        exhibitRef = getIntent().getStringExtra("ExternalRef") + getIntent().getStringExtra("LocalRef");
+        filePrefix = getIntent().getStringExtra("ExternalRef")  + getIntent().getStringExtra("LocalRef");
+        exhibitRef = getIntent().getStringExtra("ExternalRef") + "_" + getIntent().getStringExtra("LocalRef");
 
+        ibTopLeft = findViewById(R.id.ib_top_left);
+        ibTop = findViewById(R.id.ib_top);
+        ibTopRight = findViewById(R.id.ib_top_right);
+        ibLeft = findViewById(R.id.ib_left);
+        ibCentre = findViewById(R.id.ib_centre);
+        ibRight = findViewById(R.id.ib_right);
+        ibBottomLeft = findViewById(R.id.ib_bottom_left);
+        ibBottom = findViewById(R.id.ib_bottom);
+        ibBottomRight = findViewById(R.id.ib_bottom_right);
+
+        ibTopLeft.setOnClickListener(this);
+        ibTop.setOnClickListener(this);
+        ibTopRight.setOnClickListener(this);
+        ibLeft.setOnClickListener(this);
+        ibCentre.setOnClickListener(this);
+        ibRight.setOnClickListener(this);
+        ibBottomLeft.setOnClickListener(this);
+        ibBottom.setOnClickListener(this);
+        ibBottomRight.setOnClickListener(this);
+
+        cbTS = findViewById(R.id.cb_timestamp);
+        cbEID = findViewById(R.id.cb_exhibit_id);
+        cbTS.setChecked(true);
+        cbEID.setChecked(true);
+
+        tvOverlay = findViewById(R.id.tv_overlay);
+
+        csPreview = findViewById(R.id.cs_photo_preview);
 
         if (checkCameraHardware(this))
         {
@@ -139,12 +195,19 @@ public class TakePhoto extends AppCompatActivity {
                     }
                 }
         );
+        setPositionChoosersOff();
+        if(displayOverlay)
+        {
+            setOverlayText();
+            setOverlayConstraints();
+            setPositionChooserOn();
+        }
     }
 
     private void takePhoto() {
         Camera.PictureCallback pictureCB = new Camera.PictureCallback() {
             public void onPictureTaken(byte[] data, Camera cam) {
-                File picFile = getOutputMediaFile(MEDIA_TYPE_IMAGE, exhibitRef);
+                File picFile = getOutputMediaFile(MEDIA_TYPE_IMAGE, filePrefix);
                 if (picFile == null) {
                     Log.e(TAG, "Couldn't create media file; check storage permissions?");
                     return;
@@ -152,13 +215,15 @@ public class TakePhoto extends AppCompatActivity {
 
                 try {
                     FileOutputStream fos = new FileOutputStream(picFile);
-                    fos.write(data);
-                    fos.close();
                     String timeStamp = picFile.getAbsolutePath().split("_")[1];
                     Log.i("Timestamp", timeStamp);
                     //https://stackoverflow.com/questions/3674930/java-regex-meta-character-and-ordinary-dot
                     timeStamp = timeStamp.split("\\.")[0];
                     Log.i("Timestamp", timeStamp);
+
+                    fos.write(data);
+                    fos.close();
+
 
                     Photograph p = new Photograph(0, exhibitID, timeStamp,  picFile.getAbsolutePath());
                     Utils.database.photographDAO().addPhotograph(p);
@@ -206,33 +271,9 @@ public class TakePhoto extends AppCompatActivity {
 
     /** Create a File for saving an image or video */
     private static File getOutputMediaFile(int type, String filePrefix){
-        // To be safe, you should check that the SDCard is mounted
-        // using Environment.getExternalStorageState() before doing this.
         String timeStamp = new SimpleDateFormat("yyyyMMdd-HHmmss").format(new Date());
         String filename = filePrefix + "_" + timeStamp + ".jpg";
         File file = new File(Utils.appContext.getFilesDir(), filename);
-        //File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(
-          //      Environment.DIRECTORY_PICTURES), "FEMS");
-        // This location works best if you want the created images to be shared
-        // between applications and persist after your app has been uninstalled.
-
-        // Create the storage directory if it does not exist
-        /*if (! mediaStorageDir.exists()){
-            if (! mediaStorageDir.mkdirs()){
-                Log.d("FEMS", "failed to create directory");
-                return null;
-            }
-        }*/
-
-        // Create a media file name
-        /*
-        File mediaFile;
-        if (type == MEDIA_TYPE_IMAGE){
-            mediaFile = new File(mediaStorageDir.getPath() + File.separator +
-                     filePrefix + timeStamp + ".jpg");
-        }  else {
-            return null;
-        }*/
 
         return file;
     }
@@ -322,4 +363,302 @@ public class TakePhoto extends AppCompatActivity {
         }
     }
 
+    private void setPositionChoosersOff()
+    {
+        ibTopLeft.getBackground().setTint(getResources().getColor(R.color.buttonDefault));
+        ibTop.getBackground().setTint(getResources().getColor(R.color.buttonDefault));
+        ibTopRight.getBackground().setTint(getResources().getColor(R.color.buttonDefault));
+        ibLeft.getBackground().setTint(getResources().getColor(R.color.buttonDefault));
+        ibCentre.getBackground().setTint(getResources().getColor(R.color.buttonDefault));
+        ibRight.getBackground().setTint(getResources().getColor(R.color.buttonDefault));
+        ibBottomLeft.getBackground().setTint(getResources().getColor(R.color.buttonDefault));
+        ibBottom.getBackground().setTint(getResources().getColor(R.color.buttonDefault));
+        ibBottomRight.getBackground().setTint(getResources().getColor(R.color.buttonDefault));
+
+    }
+
+    private void setPositionChooserOn()
+    {
+        switch (currPosition)
+        {
+            case TOP_LEFT:
+                ibTopLeft.getBackground().setTint(getResources().getColor(R.color.colorSecondaryAccent));
+                break;
+            case TOP:
+                ibTop.getBackground().setTint(getResources().getColor(R.color.colorSecondaryAccent));
+                break;
+            case TOP_RIGHT:
+                ibTopRight.getBackground().setTint(getResources().getColor(R.color.colorSecondaryAccent));
+                break;
+            case LEFT:
+                ibLeft.getBackground().setTint(getResources().getColor(R.color.colorSecondaryAccent));
+                break;
+            case CENTRE:
+                ibCentre.getBackground().setTint(getResources().getColor(R.color.colorSecondaryAccent));
+                break;
+            case RIGHT:
+                ibRight.getBackground().setTint(getResources().getColor(R.color.colorSecondaryAccent));
+                break;
+            case BOTTOM_LEFT:
+                ibBottomLeft.getBackground().setTint(getResources().getColor(R.color.colorSecondaryAccent));
+                break;
+            case BOTTOM:
+                ibBottom.getBackground().setTint(getResources().getColor(R.color.colorSecondaryAccent));
+                break;
+            case BOTTOM_RIGHT:
+                ibBottomRight.getBackground().setTint(getResources().getColor(R.color.colorSecondaryAccent));
+                break;
+        }
+    }
+
+    @Override
+    public void onClick(View v) {
+        Log.i(TAG, "Pre Click Processing:");
+        reportFlags();
+
+        if( v == ibTopLeft && displayOverlay)
+        {
+            setPositionChoosersOff();
+            currPosition = TOP_LEFT;
+            setPositionChooserOn();
+        }
+        if( v == ibTop  && displayOverlay)
+        {
+            setPositionChoosersOff();
+            currPosition = TOP;
+            setPositionChooserOn();
+        }
+        if( v == ibTopRight  && displayOverlay)
+        {
+            setPositionChoosersOff();
+            currPosition = TOP_RIGHT;
+            setPositionChooserOn();
+        }
+        if( v == ibLeft  && displayOverlay)
+        {
+            setPositionChoosersOff();
+            currPosition = LEFT;
+            setPositionChooserOn();
+        }
+        if( v == ibCentre  && displayOverlay)
+        {
+            setPositionChoosersOff();
+            currPosition = CENTRE;
+            setPositionChooserOn();
+        }
+        if( v == ibRight  && displayOverlay)
+        {
+            setPositionChoosersOff();
+            currPosition = RIGHT;
+            setPositionChooserOn();
+        }
+        if( v == ibBottomLeft && displayOverlay)
+        {
+            setPositionChoosersOff();
+            currPosition = BOTTOM_LEFT;
+            setPositionChooserOn();
+        }
+        if( v == ibBottom && displayOverlay)
+        {
+            setPositionChoosersOff();
+            currPosition = BOTTOM;
+            setPositionChooserOn();
+        }
+        if( v == ibBottomRight && displayOverlay)
+        {
+            setPositionChoosersOff();
+            currPosition = BOTTOM_RIGHT;
+            setPositionChooserOn();
+        }
+        setOverlayConstraints();
+
+        Log.i(TAG, "Post Click Processing:");
+        reportFlags();
+    }
+
+    private void reportFlags()
+    {
+        Log.i(TAG,
+                "displayOverlay: " + displayOverlay +
+                        ", displayTimestamp: " + displayTimestamp +
+                        ", displayExhibitID: " + displayExhibitID +
+                        ", currPosition: " + currPosition);
+    }
+
+    public void onCheckBoxClicked(View v)
+    {
+        CheckBox cb = (CheckBox)v;
+
+
+        if (cb == cbTS)
+        {
+            if(cb.isChecked())
+            {
+                displayTimestamp = true;
+                if(!displayOverlay)
+                {
+                    displayOverlay = true;
+                    setPositionChooserOn();
+                    setOverlayConstraints();
+                    tvOverlay.setVisibility(View.VISIBLE);
+                }
+            }
+            else
+            {
+                displayTimestamp = false;
+                if (!displayExhibitID)
+                {
+                    displayOverlay = false;
+                    tvOverlay.setVisibility(View.INVISIBLE);
+                    setPositionChoosersOff();
+                }
+            }
+        }
+
+        if (cb == cbEID)
+        {
+            if(cb.isChecked())
+            {
+                displayExhibitID = true;
+                if(!displayOverlay)
+                {
+                    displayOverlay = true;
+                    setPositionChooserOn();
+                    setOverlayConstraints();
+                    tvOverlay.setVisibility(View.VISIBLE);
+                }
+            }
+            else
+            {
+                displayExhibitID = false;
+                if (!displayTimestamp)
+                {
+                    displayOverlay = false;
+                    tvOverlay.setVisibility(View.INVISIBLE);
+                    setPositionChoosersOff();
+                }
+            }
+        }
+        setOverlayText();
+    }
+
+    public void setOverlayText()
+    {
+        String overlayText = "";
+        if(displayExhibitID)
+        {
+            overlayText += exhibitRef;
+        }
+        if(displayTimestamp)
+        {
+            if(!overlayText.isEmpty())
+            {
+                overlayText += "\n";
+            }
+            overlayText += "Timestamp";
+        }
+        tvOverlay.setText(overlayText);
+    }
+
+    public void setOverlayConstraints()
+    {
+        ConstraintSet cs = new ConstraintSet();
+        cs.clone(csPreview);
+        switch (currPosition)
+        {
+            case TOP_LEFT:
+                //Top
+                cs.connect(R.id.tv_overlay,ConstraintSet.TOP,R.id.fl_take_photo_camera_preview,ConstraintSet.TOP,8);
+                //Left
+                cs.connect(R.id.tv_overlay,ConstraintSet.START,R.id.fl_take_photo_camera_preview,ConstraintSet.START,8);
+                //Right
+                cs.clear(R.id.tv_overlay, ConstraintSet.END);
+                //Bottom
+                cs.clear(R.id.tv_overlay, ConstraintSet.BOTTOM);
+                break;
+            case TOP:
+                //Top
+                cs.connect(R.id.tv_overlay,ConstraintSet.TOP,R.id.fl_take_photo_camera_preview,ConstraintSet.TOP,8);
+                //Left
+                cs.connect(R.id.tv_overlay,ConstraintSet.START,R.id.fl_take_photo_camera_preview,ConstraintSet.START,8);
+                //Right
+                cs.connect(R.id.tv_overlay,ConstraintSet.END,R.id.fl_take_photo_camera_preview,ConstraintSet.END,8);
+                //Bottom
+                cs.clear(R.id.tv_overlay, ConstraintSet.BOTTOM);
+                break;
+            case TOP_RIGHT:
+                //Top
+                cs.connect(R.id.tv_overlay,ConstraintSet.TOP,R.id.fl_take_photo_camera_preview,ConstraintSet.TOP,8);
+                //Left
+                cs.clear(R.id.tv_overlay, ConstraintSet.START);
+                //Right
+                cs.connect(R.id.tv_overlay,ConstraintSet.END,R.id.fl_take_photo_camera_preview,ConstraintSet.END,8);
+                //Bottom
+                cs.clear(R.id.tv_overlay, ConstraintSet.BOTTOM);
+                break;
+            case LEFT:
+                //Top
+                cs.connect(R.id.tv_overlay,ConstraintSet.TOP,R.id.fl_take_photo_camera_preview,ConstraintSet.TOP,8);
+                //Left
+                cs.connect(R.id.tv_overlay,ConstraintSet.START,R.id.fl_take_photo_camera_preview,ConstraintSet.START,8);
+                //Right
+                cs.clear(R.id.tv_overlay, ConstraintSet.END);
+                //Bottom
+                cs.connect(R.id.tv_overlay,ConstraintSet.BOTTOM,R.id.fl_take_photo_camera_preview,ConstraintSet.BOTTOM,8);
+                break;
+            case CENTRE:
+                //Top
+                cs.connect(R.id.tv_overlay,ConstraintSet.TOP,R.id.fl_take_photo_camera_preview,ConstraintSet.TOP,8);
+                //Left
+                cs.connect(R.id.tv_overlay,ConstraintSet.START,R.id.fl_take_photo_camera_preview,ConstraintSet.START,8);
+                //Right
+                cs.connect(R.id.tv_overlay,ConstraintSet.END,R.id.fl_take_photo_camera_preview,ConstraintSet.END,8);
+                //Bottom
+                cs.connect(R.id.tv_overlay,ConstraintSet.BOTTOM,R.id.fl_take_photo_camera_preview,ConstraintSet.BOTTOM,8);
+                break;
+            case RIGHT:
+                //Top
+                cs.connect(R.id.tv_overlay,ConstraintSet.TOP,R.id.fl_take_photo_camera_preview,ConstraintSet.TOP,8);
+                //Left
+                cs.clear(R.id.tv_overlay, ConstraintSet.START);
+                //Right
+                cs.connect(R.id.tv_overlay,ConstraintSet.END,R.id.fl_take_photo_camera_preview,ConstraintSet.END,8);
+                //Bottom
+                cs.connect(R.id.tv_overlay,ConstraintSet.BOTTOM,R.id.fl_take_photo_camera_preview,ConstraintSet.BOTTOM,8);
+                break;
+            case BOTTOM_LEFT:
+                //Top
+                cs.clear(R.id.tv_overlay, ConstraintSet.TOP);
+                //Left
+                cs.connect(R.id.tv_overlay,ConstraintSet.START,R.id.fl_take_photo_camera_preview,ConstraintSet.START,8);
+                //Right
+                cs.clear(R.id.tv_overlay, ConstraintSet.END);
+                //Bottom
+                cs.connect(R.id.tv_overlay,ConstraintSet.BOTTOM,R.id.fl_take_photo_camera_preview,ConstraintSet.BOTTOM,8);
+                break;
+            case BOTTOM:
+                //Top
+                cs.clear(R.id.tv_overlay, ConstraintSet.TOP);
+                //Left
+                cs.connect(R.id.tv_overlay,ConstraintSet.START,R.id.fl_take_photo_camera_preview,ConstraintSet.START,8);
+                //Right
+                cs.connect(R.id.tv_overlay,ConstraintSet.END,R.id.fl_take_photo_camera_preview,ConstraintSet.END,8);
+                //Bottom
+                cs.connect(R.id.tv_overlay,ConstraintSet.BOTTOM,R.id.fl_take_photo_camera_preview,ConstraintSet.BOTTOM,8);
+                break;
+            case BOTTOM_RIGHT:
+                //Top
+                cs.clear(R.id.tv_overlay, ConstraintSet.TOP);
+                //Left
+                cs.clear(R.id.tv_overlay, ConstraintSet.START);
+                //Right
+                cs.connect(R.id.tv_overlay,ConstraintSet.END,R.id.fl_take_photo_camera_preview,ConstraintSet.END,8);
+                //Bottom
+                cs.connect(R.id.tv_overlay,ConstraintSet.BOTTOM,R.id.fl_take_photo_camera_preview,ConstraintSet.BOTTOM,8);
+                break;
+        }
+        cs.applyTo(csPreview);
+
+
+    }
 }

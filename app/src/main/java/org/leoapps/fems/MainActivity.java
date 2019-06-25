@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onResume() {
-        super.onStart();
+        super.onResume();
 
         displayCaseList();
     }
