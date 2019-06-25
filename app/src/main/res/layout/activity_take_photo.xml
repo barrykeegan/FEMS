@@ -32,7 +32,6 @@
             android:layout_height="wrap_content"
             android:padding="4dp"
             android:layout_margin="8dp"
-            android:background="#333"
             android:textColor="#FFF"
             android:text="TEST TEXT"
             app:layout_constraintStart_toStartOf="parent"

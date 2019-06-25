@@ -3,7 +3,12 @@ package org.leoapps.fems;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.ImageFormat;
+import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.hardware.Camera;
@@ -25,6 +30,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -204,6 +210,62 @@ public class TakePhoto extends AppCompatActivity implements View.OnClickListener
         }
     }
 
+    public byte[] addOverlayText(byte[] data, String textToAdd)
+    {
+        Bitmap dest = BitmapFactory.decodeByteArray(data, 0, data.length).copy(Bitmap.Config.ARGB_8888, true);
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        Canvas canvas = new Canvas(dest);
+
+        Paint paint = new Paint();
+        paint.setAntiAlias(true);
+        paint.setColor(Color.WHITE);
+        paint.setStyle(Paint.Style.FILL);
+        paint.setShadowLayer(2.0f, 1.0f, 1.0f, Color.BLACK);
+        int picHeight = dest.getHeight();
+        paint.setTextSize(picHeight * .02f);
+
+        //set x co-ord
+        int x;
+        switch (currPosition)
+        {
+            case TOP_LEFT: case LEFT: case BOTTOM_LEFT:
+                x = 100;
+                break;
+            case TOP: case CENTRE: case BOTTOM:
+                x = (dest.getWidth() / 2) - 150;
+                break;
+            case TOP_RIGHT: case RIGHT: case BOTTOM_RIGHT:
+                x = dest.getWidth()  - 1200;
+                break;
+            default:
+                x = 100;
+                break;
+        }
+
+        //set x co-ord
+        int y;
+        switch (currPosition)
+        {
+            case TOP_LEFT: case TOP: case TOP_RIGHT:
+                y = 150;
+                break;
+            case LEFT: case CENTRE: case RIGHT:
+                y = (dest.getHeight() / 2) - 75;
+                break;
+            case BOTTOM_LEFT: case BOTTOM: case BOTTOM_RIGHT:
+                y = dest.getHeight()  - 100;
+                break;
+            default:
+                y = 150;
+                break;
+        }
+
+        canvas.drawText(textToAdd, x, y, paint);
+
+        dest.compress(Bitmap.CompressFormat.JPEG,100, stream);
+        return stream.toByteArray();
+    }
+
     private void takePhoto() {
         Camera.PictureCallback pictureCB = new Camera.PictureCallback() {
             public void onPictureTaken(byte[] data, Camera cam) {
@@ -221,7 +283,32 @@ public class TakePhoto extends AppCompatActivity implements View.OnClickListener
                     timeStamp = timeStamp.split("\\.")[0];
                     Log.i("Timestamp", timeStamp);
 
-                    fos.write(data);
+                    byte[] toSave = null;
+                    if(displayOverlay)
+                    {
+                        String textToAdd = "";
+                        if(displayExhibitID)
+                        {
+                            textToAdd += exhibitRef;
+                        }
+                        if(displayTimestamp)
+                        {
+                            if(!textToAdd.isEmpty())
+                            {
+                                textToAdd += " ";
+                            }
+                            textToAdd += timeStamp;
+                        }
+                        toSave = addOverlayText(data, textToAdd);
+                    }
+                    if(toSave == null)
+                    {
+                        fos.write(data);
+                    }
+                    else
+                        {
+                        fos.write(toSave);
+                    }
                     fos.close();
 
 
@@ -553,7 +640,7 @@ public class TakePhoto extends AppCompatActivity implements View.OnClickListener
         {
             if(!overlayText.isEmpty())
             {
-                overlayText += "\n";
+                overlayText += " ";
             }
             overlayText += "Timestamp";
         }
