@@ -212,6 +212,7 @@ public class TakePhoto extends AppCompatActivity implements View.OnClickListener
 
     public byte[] addOverlayText(byte[] data, String textToAdd)
     {
+        //http://www.blog.nathanhaze.com/android-text-picture-camera-app/
         Bitmap dest = BitmapFactory.decodeByteArray(data, 0, data.length).copy(Bitmap.Config.ARGB_8888, true);
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         Canvas canvas = new Canvas(dest);
@@ -297,7 +298,8 @@ public class TakePhoto extends AppCompatActivity implements View.OnClickListener
                             {
                                 textToAdd += " ";
                             }
-                            textToAdd += timeStamp;
+                            textToAdd += timeStamp.substring(0,4) + "/" + timeStamp.substring(4,6) +"/" +timeStamp.substring(6, 8) + "-";
+                            textToAdd += timeStamp.substring(9,11) + ":" + timeStamp.substring(11,13) +":" +timeStamp.substring(13);
                         }
                         toSave = addOverlayText(data, textToAdd);
                     }

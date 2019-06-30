@@ -22,12 +22,11 @@ public class PhotographListAdapter extends RecyclerView.Adapter<PhotographListAd
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public View layout;
-
         public LinearLayout llPhoto;
-
         public ImageView ivExhibitPhoto;
-
         public TextView tvPhotoID;
+
+        public Photograph p;
 
         public ViewHolder(View v)
         {
@@ -40,6 +39,7 @@ public class PhotographListAdapter extends RecyclerView.Adapter<PhotographListAd
 
             tvPhotoID = v.findViewById(R.id.tv_photograph_id);
 
+            layout.setOnClickListener(this);
             /*llExhibitDetails.setOnClickListener(this);
             ivShareExhibit.setOnClickListener(this);
             ivEditExhibit.setOnClickListener(this);
@@ -48,6 +48,11 @@ public class PhotographListAdapter extends RecyclerView.Adapter<PhotographListAd
 
         @Override
         public void onClick(View v) {
+            Intent intent = new Intent(v.getContext(), PhotoDetails.class);
+            intent.putExtra("ID", p.ID);
+            intent.putExtra("Timestamp", p.DateTimeTaken);
+            intent.putExtra("Location", p.FileLocation);
+            v.getContext().startActivity(intent);
             /*String whichExhibit = "Exhibit " + tvExhibitListID.getText().toString();
             if( v == llExhibitDetails)
             {
@@ -109,6 +114,7 @@ public class PhotographListAdapter extends RecyclerView.Adapter<PhotographListAd
     @Override
     public void onBindViewHolder(@NonNull PhotographListAdapter.ViewHolder holder, int position) {
         final Photograph photo = photoList.get(position);
+        holder.p = photo;
         holder.tvPhotoID.setText(Integer.toString(photo.ID));
         holder.ivExhibitPhoto.setImageBitmap(ThumbnailUtils.extractThumbnail(BitmapFactory.decodeFile(photo.FileLocation), 90, 90));
 
