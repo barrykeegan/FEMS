@@ -3,6 +3,8 @@ package org.leoapps.fems;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
@@ -38,6 +40,8 @@ public class CaseDetails extends AppCompatActivity {
     private RecyclerView rvExhibits;
 
     private Case aCase;
+
+    private List<Exhibit> exhibits;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,6 +92,7 @@ public class CaseDetails extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Toast.makeText(CaseDetails.this, "Sharing case", Toast.LENGTH_LONG).show();
+                shareAllCasePhotos();
             }
         });
 
@@ -118,7 +123,7 @@ public class CaseDetails extends AppCompatActivity {
     private void displayExhibitList()
     {
         Log.i(TAG, "In display exhibit List");
-        List<Exhibit> exhibits = Utils.database.exhibitDAO().getExhibitsForCase(intCaseID);
+        exhibits = Utils.database.exhibitDAO().getExhibitsForCase(intCaseID);
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         rvExhibits.setLayoutManager(layoutManager);
@@ -156,6 +161,33 @@ public class CaseDetails extends AppCompatActivity {
                         CaseDetails.this.finish();
                     }})
                 .setNegativeButton(android.R.string.no, null).show();
+    }
+
+    private void shareAllCasePhotos()
+    {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Handler handler = new Handler(Looper.getMainLooper());
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        for (Exhibit exhibit: exhibits)
+                        {
+                            List<Photograph> photos = Utils.database.photographDAO().getPhotographsForExhibit(exhibit.ID);
+                            if (photos.size() > 0)
+                            {
+                                for (Photograph photo: photos)
+                                {
+                                    Utils.copyPhotoToExternal(photo.FileLocation);
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+        }).start();
+
     }
 
 }

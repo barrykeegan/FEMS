@@ -2,10 +2,14 @@ package org.leoapps.fems;
 
 import android.app.DatePickerDialog;
 import android.content.Context;
+import android.os.Environment;
 import android.util.Log;
 import android.widget.DatePicker;
 import android.widget.EditText;
 
+import org.apache.commons.io.FileUtils;
+
+import java.io.File;
 import java.util.List;
 
 public class Utils{
@@ -38,6 +42,26 @@ public class Utils{
 
         for (int i = 0; i < caseTypes.size(); i++) {
             CaseTypes[i] = caseTypes.get(i).Type;
+        }
+    }
+
+    public static void copyPhotoToExternal(String fileLocation)
+    {
+        File source = new File(fileLocation);
+
+        String destPath = Environment.getExternalStorageDirectory().getAbsolutePath()
+                + "/FEMS/" + fileLocation.substring(fileLocation.lastIndexOf('/')+1);
+        File destination = new File(destPath);
+
+        Log.d(TAG, "source: " + fileLocation + ", destination: " + destPath);
+
+        try
+        {
+            FileUtils.copyFile(source, destination);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
         }
     }
 

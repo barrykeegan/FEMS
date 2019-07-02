@@ -6,6 +6,8 @@ import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.ThumbnailUtils;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -106,7 +108,8 @@ public class ExhibitDetails extends AppCompatActivity {
         ivShareExhibit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(v.getContext(), "Sharing Exhibit", Toast.LENGTH_LONG).show();
+                Toast.makeText(v.getContext(), "Sharing Exhibit Photos", Toast.LENGTH_LONG).show();
+                sharePhotos();
 
             }
         });
@@ -186,5 +189,29 @@ public class ExhibitDetails extends AppCompatActivity {
             RecyclerView.Adapter myAdapter = new NoContentAdapter(noContent);
             rvPhotos.setAdapter(myAdapter);
         }
+    }
+
+    private void sharePhotos()
+    {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Handler handler = new Handler(Looper.getMainLooper());
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        List<Photograph> photos = Utils.database.photographDAO().getPhotographsForExhibit(intExhibitID);
+                        if (photos.size() > 0)
+                        {
+                            for (Photograph photo: photos)
+                            {
+                                Utils.copyPhotoToExternal(photo.FileLocation);
+                            }
+                        }
+                    }
+                });
+            }
+        }).start();
+
     }
 }
