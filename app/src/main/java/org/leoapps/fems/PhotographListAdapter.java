@@ -127,7 +127,9 @@ public class PhotographListAdapter extends RecyclerView.Adapter<PhotographListAd
                         final Photograph photo = photoList.get(position);
                         holder.p = photo;
                         holder.tvPhotoID.setText(Integer.toString(photo.ID));
-                        holder.ivExhibitPhoto.setImageBitmap(ThumbnailUtils.extractThumbnail(BitmapFactory.decodeFile(photo.FileLocation), 90, 90));
+                        String thumbLocation = photo.FileLocation.substring(0, photo.FileLocation.lastIndexOf('/') +1 );
+                        thumbLocation += "thumb" + photo.FileLocation.substring(photo.FileLocation.lastIndexOf('/') +1);
+                        holder.ivExhibitPhoto.setImageBitmap(BitmapFactory.decodeFile(thumbLocation));
                     }
                 });
             }

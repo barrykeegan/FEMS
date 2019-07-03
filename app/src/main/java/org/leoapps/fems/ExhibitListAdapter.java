@@ -129,7 +129,9 @@ public class ExhibitListAdapter extends RecyclerView.Adapter<ExhibitListAdapter.
         List<Photograph> photos = Utils.database.photographDAO().getPhotographsForExhibit(exhibit.ID);
         if(photos.size()>0)
         {
-            holder.ivExhibitThumbnail.setImageBitmap(ThumbnailUtils.extractThumbnail(BitmapFactory.decodeFile(photos.get(0).FileLocation), 80, 80));
+            String thumbLocation = photos.get(0).FileLocation.substring(0, photos.get(0).FileLocation.lastIndexOf('/') +1 );
+            thumbLocation += "thumb" + photos.get(0).FileLocation.substring(photos.get(0).FileLocation.lastIndexOf('/') +1);
+            holder.ivExhibitThumbnail.setImageBitmap(BitmapFactory.decodeFile(thumbLocation));
         }
 
         holder.tvExhibitLocalID.setText(exhibit.LocalExhibitID);

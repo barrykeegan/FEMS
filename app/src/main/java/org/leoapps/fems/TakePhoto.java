@@ -111,8 +111,19 @@ public class TakePhoto extends AppCompatActivity implements View.OnClickListener
 
 
         exhibitID = getIntent().getIntExtra("ExhibitID", -1);
-        filePrefix = getIntent().getStringExtra("ExternalRef")  + getIntent().getStringExtra("LocalRef");
-        exhibitRef = getIntent().getStringExtra("ExternalRef") + "_" + getIntent().getStringExtra("LocalRef");
+        String extRef = getIntent().getStringExtra("ExternalRef");
+        String localRef = getIntent().getStringExtra("LocalRef");
+
+        filePrefix = extRef  + localRef;
+        if(!extRef.isEmpty() && !localRef.isEmpty())
+        {
+            exhibitRef = extRef + "_" + localRef;
+        }
+        else
+        {
+            exhibitRef = extRef + localRef;
+        }
+
 
         ibTopLeft = findViewById(R.id.ib_top_left);
         ibTop = findViewById(R.id.ib_top);
@@ -233,7 +244,7 @@ public class TakePhoto extends AppCompatActivity implements View.OnClickListener
                 x = 100;
                 break;
             case TOP: case CENTRE: case BOTTOM:
-                x = (dest.getWidth() / 2) - 150;
+                x = (dest.getWidth() / 2) - 500;
                 break;
             case TOP_RIGHT: case RIGHT: case BOTTOM_RIGHT:
                 x = dest.getWidth()  - 1200;
@@ -251,7 +262,7 @@ public class TakePhoto extends AppCompatActivity implements View.OnClickListener
                 y = 150;
                 break;
             case LEFT: case CENTRE: case RIGHT:
-                y = (dest.getHeight() / 2) - 75;
+                y = (dest.getHeight() / 2) + 75;
                 break;
             case BOTTOM_LEFT: case BOTTOM: case BOTTOM_RIGHT:
                 y = dest.getHeight()  - 100;
@@ -270,15 +281,23 @@ public class TakePhoto extends AppCompatActivity implements View.OnClickListener
     private void takePhoto() {
         Camera.PictureCallback pictureCB = new Camera.PictureCallback() {
             public void onPictureTaken(byte[] data, Camera cam) {
-                File picFile = getOutputMediaFile(MEDIA_TYPE_IMAGE, filePrefix);
-                if (picFile == null) {
-                    Log.e(TAG, "Couldn't create media file; check storage permissions?");
+                File[] picFiles = getOutputMediaFile(MEDIA_TYPE_IMAGE, filePrefix);
+                if (picFiles[0] == null || picFiles[1] == null) {
+                    Log.e(TAG, "Couldn't create media files; check storage permissions?");
                     return;
                 }
 
                 try {
-                    FileOutputStream fos = new FileOutputStream(picFile);
-                    String timeStamp = picFile.getAbsolutePath().split("_")[1];
+                    FileOutputStream fosLarge = new FileOutputStream(picFiles[0]);
+                    FileOutputStream fosThumb = new FileOutputStream(picFiles[1]);
+                    String timeStamp;
+                    if(picFiles[0].getAbsolutePath().indexOf('_') != -1) {
+                        timeStamp = picFiles[0].getAbsolutePath().split("_")[1];
+                    }
+                    else
+                    {
+                        timeStamp = picFiles[0].getAbsolutePath().substring(picFiles[0].getAbsolutePath().lastIndexOf('/') + 1);
+                    }
                     Log.i("Timestamp", timeStamp);
                     //https://stackoverflow.com/questions/3674930/java-regex-meta-character-and-ordinary-dot
                     timeStamp = timeStamp.split("\\.")[0];
@@ -296,8 +315,11 @@ public class TakePhoto extends AppCompatActivity implements View.OnClickListener
                         {
                             if(!textToAdd.isEmpty())
                             {
-                                textToAdd += " ";
+                                textToAdd += "-";
                             }
+
+
+
                             textToAdd += timeStamp.substring(0,4) + "/" + timeStamp.substring(4,6) +"/" +timeStamp.substring(6, 8) + "-";
                             textToAdd += timeStamp.substring(9,11) + ":" + timeStamp.substring(11,13) +":" +timeStamp.substring(13);
                         }
@@ -305,16 +327,27 @@ public class TakePhoto extends AppCompatActivity implements View.OnClickListener
                     }
                     if(toSave == null)
                     {
-                        fos.write(data);
+                        fosLarge.write(data);
+                        Bitmap thumb = Bitmap.createScaledBitmap(
+                                BitmapFactory.decodeByteArray(data, 0 , data.length), 90, 90, false);
+                        ByteArrayOutputStream thumbBaos = new ByteArrayOutputStream();
+                        thumb.compress(Bitmap.CompressFormat.JPEG, 100, thumbBaos);
+                        fosThumb.write(thumbBaos.toByteArray());
                     }
                     else
-                        {
-                        fos.write(toSave);
+                    {
+                        fosLarge.write(toSave);
+                        Bitmap thumb = Bitmap.createScaledBitmap(
+                                BitmapFactory.decodeByteArray(toSave, 0 , toSave.length), 90, 90, false);
+                        ByteArrayOutputStream thumbBaos = new ByteArrayOutputStream();
+                        thumb.compress(Bitmap.CompressFormat.JPEG, 100, thumbBaos);
+                        fosThumb.write(thumbBaos.toByteArray());
                     }
-                    fos.close();
+                    fosLarge.close();
+                    fosThumb.close();
 
 
-                    Photograph p = new Photograph(0, exhibitID, timeStamp,  picFile.getAbsolutePath());
+                    Photograph p = new Photograph(0, exhibitID, timeStamp,  picFiles[0].getAbsolutePath());
                     Utils.database.photographDAO().addPhotograph(p);
                 } catch (FileNotFoundException e) {
                     Log.e(TAG, "File not found: " + e.getMessage());
@@ -359,12 +392,15 @@ public class TakePhoto extends AppCompatActivity implements View.OnClickListener
     }*/
 
     /** Create a File for saving an image or video */
-    private static File getOutputMediaFile(int type, String filePrefix){
+    private static File[] getOutputMediaFile(int type, String filePrefix){
         String timeStamp = new SimpleDateFormat("yyyyMMdd-HHmmss").format(new Date());
-        String filename = filePrefix + "_" + timeStamp + ".jpg";
-        File file = new File(Utils.appContext.getFilesDir(), filename);
+        String largefilename = filePrefix.isEmpty() ? timeStamp + ".jpg" : filePrefix + "_" + timeStamp + ".jpg";
+        String thumbfilename = "thumb" + largefilename;
+        File[] files = new File[2];
+        files[0] = new File(Utils.appContext.getFilesDir(), largefilename);
+        files[1] = new File(Utils.appContext.getFilesDir(), thumbfilename);
 
-        return file;
+        return files;
     }
 
     Camera.Parameters setPreviewSize()
@@ -634,6 +670,7 @@ public class TakePhoto extends AppCompatActivity implements View.OnClickListener
     public void setOverlayText()
     {
         String overlayText = "";
+        Log.d(TAG, "setOverlayText: '" +  exhibitRef + "'");
         if(displayExhibitID)
         {
             overlayText += exhibitRef;
@@ -642,7 +679,7 @@ public class TakePhoto extends AppCompatActivity implements View.OnClickListener
         {
             if(!overlayText.isEmpty())
             {
-                overlayText += " ";
+                overlayText += "-";
             }
             overlayText += "Timestamp";
         }
