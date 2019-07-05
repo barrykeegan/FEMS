@@ -57,6 +57,11 @@ public class ExhibitDetails extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_exhibit_details);
 
+        if(Utils.database == null)
+        {
+            Utils.initialiseUtilsProperties(getApplicationContext());
+        }
+
         tvLocalRef = findViewById(R.id.tv_exhibit_details_local_reference);
         tvExternalRef = findViewById(R.id.tv_exhibit_details_external_reference);
         tvDescription = findViewById(R.id.tv_exhibit_details_description);

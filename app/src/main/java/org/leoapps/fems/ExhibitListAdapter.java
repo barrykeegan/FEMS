@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.media.ThumbnailUtils;
 import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintSet;
+import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -123,6 +125,8 @@ public class ExhibitListAdapter extends RecyclerView.Adapter<ExhibitListAdapter.
     @Override
     public void onBindViewHolder(@NonNull ExhibitListAdapter.ViewHolder holder, int position) {
         final Exhibit exhibit = exhibitList.get(position);
+        //set here to account for recycled views retaining incorrect thumbnail of exhibit
+        holder.ivExhibitThumbnail.setImageDrawable(ResourcesCompat.getDrawable(holder.layout.getResources(), R.drawable.thumbnailplaceholder, null));
         holder.tvCaseListID.setText(Integer.toString(exhibit.CaseID));
         holder.tvExhibitListID.setText(Integer.toString(exhibit.ID));
 

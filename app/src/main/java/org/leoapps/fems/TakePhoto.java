@@ -14,6 +14,8 @@ import android.graphics.RectF;
 import android.hardware.Camera;
 import android.net.Uri;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.constraint.ConstraintLayout;
 import android.support.constraint.ConstraintSet;
 import android.support.v4.app.ActivityCompat;
@@ -97,6 +99,12 @@ public class TakePhoto extends AppCompatActivity implements View.OnClickListener
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if(Utils.database == null)
+        {
+            Utils.initialiseUtilsProperties(getApplicationContext());
+        }
+
         setContentView(R.layout.activity_take_photo);
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_DENIED)
@@ -280,82 +288,91 @@ public class TakePhoto extends AppCompatActivity implements View.OnClickListener
 
     private void takePhoto() {
         Camera.PictureCallback pictureCB = new Camera.PictureCallback() {
-            public void onPictureTaken(byte[] data, Camera cam) {
-                File[] picFiles = getOutputMediaFile(MEDIA_TYPE_IMAGE, filePrefix);
-                if (picFiles[0] == null || picFiles[1] == null) {
-                    Log.e(TAG, "Couldn't create media files; check storage permissions?");
-                    return;
-                }
+            public void onPictureTaken(final byte[] data, Camera cam) {
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        //Handler handler = new Handler(Looper.getMainLooper());
 
-                try {
-                    FileOutputStream fosLarge = new FileOutputStream(picFiles[0]);
-                    FileOutputStream fosThumb = new FileOutputStream(picFiles[1]);
-                    String timeStamp;
-                    if(picFiles[0].getAbsolutePath().indexOf('_') != -1) {
-                        timeStamp = picFiles[0].getAbsolutePath().split("_")[1];
-                    }
-                    else
-                    {
-                        timeStamp = picFiles[0].getAbsolutePath().substring(picFiles[0].getAbsolutePath().lastIndexOf('/') + 1);
-                    }
-                    Log.i("Timestamp", timeStamp);
-                    //https://stackoverflow.com/questions/3674930/java-regex-meta-character-and-ordinary-dot
-                    timeStamp = timeStamp.split("\\.")[0];
-                    Log.i("Timestamp", timeStamp);
-
-                    byte[] toSave = null;
-                    if(displayOverlay)
-                    {
-                        String textToAdd = "";
-                        if(displayExhibitID)
-                        {
-                            textToAdd += exhibitRef;
+                        File[] picFiles = getOutputMediaFile(MEDIA_TYPE_IMAGE, filePrefix);
+                        if (picFiles[0] == null || picFiles[1] == null) {
+                            Log.e(TAG, "Couldn't create media files; check storage permissions?");
+                            return;
                         }
-                        if(displayTimestamp)
-                        {
-                            if(!textToAdd.isEmpty())
-                            {
-                                textToAdd += "-";
+
+                        try {
+                            FileOutputStream fosLarge = new FileOutputStream(picFiles[0]);
+                            FileOutputStream fosThumb = new FileOutputStream(picFiles[1]);
+                            String timeStamp;
+                            if(picFiles[0].getAbsolutePath().indexOf('_') != -1) {
+                                timeStamp = picFiles[0].getAbsolutePath().split("_")[1];
                             }
+                            else
+                            {
+                                timeStamp = picFiles[0].getAbsolutePath().substring(picFiles[0].getAbsolutePath().lastIndexOf('/') + 1);
+                            }
+                            Log.i("Timestamp", timeStamp);
+                            //https://stackoverflow.com/questions/3674930/java-regex-meta-character-and-ordinary-dot
+                            timeStamp = timeStamp.split("\\.")[0];
+                            Log.i("Timestamp", timeStamp);
+
+                            byte[] toSave = null;
+                            if(displayOverlay)
+                            {
+                                String textToAdd = "";
+                                if(displayExhibitID)
+                                {
+                                    textToAdd += exhibitRef;
+                                }
+                                if(displayTimestamp)
+                                {
+                                    if(!textToAdd.isEmpty())
+                                    {
+                                        textToAdd += "-";
+                                    }
 
 
 
-                            textToAdd += timeStamp.substring(0,4) + "/" + timeStamp.substring(4,6) +"/" +timeStamp.substring(6, 8) + "-";
-                            textToAdd += timeStamp.substring(9,11) + ":" + timeStamp.substring(11,13) +":" +timeStamp.substring(13);
+                                    textToAdd += timeStamp.substring(0,4) + "/" + timeStamp.substring(4,6) +"/" +timeStamp.substring(6, 8) + "-";
+                                    textToAdd += timeStamp.substring(9,11) + ":" + timeStamp.substring(11,13) +":" +timeStamp.substring(13);
+                                }
+                                toSave = addOverlayText(data, textToAdd);
+                            }
+                            if(toSave == null)
+                            {
+                                fosLarge.write(data);
+                                Bitmap thumb = Bitmap.createScaledBitmap(
+                                        BitmapFactory.decodeByteArray(data, 0 , data.length), 90, 90, false);
+                                ByteArrayOutputStream thumbBaos = new ByteArrayOutputStream();
+                                thumb.compress(Bitmap.CompressFormat.JPEG, 100, thumbBaos);
+                                fosThumb.write(thumbBaos.toByteArray());
+                            }
+                            else
+                            {
+                                fosLarge.write(toSave);
+                                Bitmap thumb = Bitmap.createScaledBitmap(
+                                        BitmapFactory.decodeByteArray(toSave, 0 , toSave.length), 90, 90, false);
+                                ByteArrayOutputStream thumbBaos = new ByteArrayOutputStream();
+                                thumb.compress(Bitmap.CompressFormat.JPEG, 100, thumbBaos);
+                                fosThumb.write(thumbBaos.toByteArray());
+                            }
+                            fosLarge.close();
+                            fosThumb.close();
+
+
+                            Photograph p = new Photograph(0, exhibitID, timeStamp,  picFiles[0].getAbsolutePath());
+                            Utils.database.photographDAO().addPhotograph(p);
+                        } catch (FileNotFoundException e) {
+                            Log.e(TAG, "File not found: " + e.getMessage());
+                            e.getStackTrace();
+                        } catch (IOException e) {
+                            Log.e(TAG, "I/O error writing file: " + e.getMessage());
+                            e.getStackTrace();
                         }
-                        toSave = addOverlayText(data, textToAdd);
                     }
-                    if(toSave == null)
-                    {
-                        fosLarge.write(data);
-                        Bitmap thumb = Bitmap.createScaledBitmap(
-                                BitmapFactory.decodeByteArray(data, 0 , data.length), 90, 90, false);
-                        ByteArrayOutputStream thumbBaos = new ByteArrayOutputStream();
-                        thumb.compress(Bitmap.CompressFormat.JPEG, 100, thumbBaos);
-                        fosThumb.write(thumbBaos.toByteArray());
-                    }
-                    else
-                    {
-                        fosLarge.write(toSave);
-                        Bitmap thumb = Bitmap.createScaledBitmap(
-                                BitmapFactory.decodeByteArray(toSave, 0 , toSave.length), 90, 90, false);
-                        ByteArrayOutputStream thumbBaos = new ByteArrayOutputStream();
-                        thumb.compress(Bitmap.CompressFormat.JPEG, 100, thumbBaos);
-                        fosThumb.write(thumbBaos.toByteArray());
-                    }
-                    fosLarge.close();
-                    fosThumb.close();
+                }).start();
 
 
-                    Photograph p = new Photograph(0, exhibitID, timeStamp,  picFiles[0].getAbsolutePath());
-                    Utils.database.photographDAO().addPhotograph(p);
-                } catch (FileNotFoundException e) {
-                    Log.e(TAG, "File not found: " + e.getMessage());
-                    e.getStackTrace();
-                } catch (IOException e) {
-                    Log.e(TAG, "I/O error writing file: " + e.getMessage());
-                    e.getStackTrace();
-                }
             }
         };
         camera.takePicture(null, null, pictureCB);
