@@ -15,7 +15,7 @@ import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+//import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -28,7 +28,7 @@ import java.util.List;
 import java.util.ListIterator;
 
 public class ExhibitDetails extends AppCompatActivity {
-    private static final String TAG = "ExhibitDetails";
+    //private static final String TAG = "ExhibitDetails";
     private final int THUMBSIZE = 64;
 
     private TextView tvLocalRef;
@@ -170,7 +170,7 @@ public class ExhibitDetails extends AppCompatActivity {
 
     private void displayPhotoList()
     {
-        Log.i(TAG, "In display exhibit List");
+        //Log.i(TAG, "In display exhibit List");
         List<Photograph> photographs = Utils.database.photographDAO().getPhotographsForExhibit(exhibit.ID);
 
 

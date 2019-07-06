@@ -59,6 +59,7 @@ public class AddCase extends AppCompatActivity  implements  DatePickerDialog.OnD
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, Utils.CaseTypes);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spnrCaseType.setAdapter(adapter);
+        spnrCaseType.setSelection(0);
 
         currentDate = new SimpleDateFormat("dd/MM/yyyy").format(new Date());
 

@@ -12,7 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
+//import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CaseDetails extends AppCompatActivity {
-    private static final String TAG = "CaseDetails";
+    //private static final String TAG = "CaseDetails";
     private int intCaseID;
     private String strCaseID;
     private TextView tvCaseID;
@@ -122,7 +122,7 @@ public class CaseDetails extends AppCompatActivity {
 
     private void displayExhibitList()
     {
-        Log.i(TAG, "In display exhibit List");
+        //Log.i(TAG, "In display exhibit List");
         exhibits = Utils.database.exhibitDAO().getExhibitsForCase(intCaseID);
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());

@@ -3,7 +3,7 @@ package org.leoapps.fems;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.os.Environment;
-import android.util.Log;
+//import android.util.Log;
 import android.widget.DatePicker;
 import android.widget.EditText;
 
@@ -13,7 +13,7 @@ import java.io.File;
 import java.util.List;
 
 public class Utils{
-    public static final String TAG = "Utils:";
+    //public static final String TAG = "Utils:";
 
     //Used to hold a static reference to app context for use in certain section of code which
     //cannot obtain their own app context
@@ -33,7 +33,7 @@ public class Utils{
 
     public static void initialiseUtilsProperties(Context applicationContext)
     {
-        Log.i(TAG, "In initialiseUtilsProperties - set up references");
+        //Log.i(TAG, "In initialiseUtilsProperties - set up references");
 
         appContext = applicationContext;
         database = AppDatabase.getDatabase(appContext);
@@ -53,7 +53,7 @@ public class Utils{
                 + "/FEMS/" + fileLocation.substring(fileLocation.lastIndexOf('/')+1);
         File destination = new File(destPath);
 
-        Log.d(TAG, "source: " + fileLocation + ", destination: " + destPath);
+        //Log.d(TAG, "source: " + fileLocation + ", destination: " + destPath);
 
         try
         {

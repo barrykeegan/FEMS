@@ -11,7 +11,7 @@ import android.provider.MediaStore;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
+//import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -31,7 +31,7 @@ import java.io.OutputStream;
 import java.nio.channels.FileChannel;
 
 public class PhotoDetails extends AppCompatActivity {
-    private static final String TAG = "PhotoDetails";
+    //private static final String TAG = "PhotoDetails";
 
     private PhotoView pvPhoto;
     private TextView tvTimestamp;
@@ -125,7 +125,7 @@ public class PhotoDetails extends AppCompatActivity {
                                 ));
                         intent.putExtra(Intent.EXTRA_TEXT, "Please find attached image...");
                         intent.putExtra(Intent.EXTRA_STREAM, uri);
-                        Log.d(TAG, "uri: " + uri.toString() + ", fileLocation: " + fileLocation);
+                        //Log.d(TAG, "uri: " + uri.toString() + ", fileLocation: " + fileLocation);
                         startActivity(Intent.createChooser(intent, "Share Image"));*/
                     }})
                 .setNegativeButton(android.R.string.no, null).show();

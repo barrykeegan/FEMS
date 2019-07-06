@@ -3,11 +3,11 @@ package org.leoapps.fems;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
-import android.util.Log;
+//import android.util.Log;
 
 @Entity(tableName = "casetypes")
 public class CaseType {
-    public static final String TAG = "CaseType";
+    //public static final String TAG = "CaseType";
 
     @PrimaryKey
     @NonNull
@@ -20,7 +20,7 @@ public class CaseType {
 
     //Will only be called on initial creation of DB
     public static CaseType[] populateCaseTypes() {
-        Log.i(TAG, "In Populate Case Types");
+        //Log.i(TAG, "In Populate Case Types");
         return new CaseType[]{
                 new CaseType("Other"),
                 new CaseType("Child Exploitation"),

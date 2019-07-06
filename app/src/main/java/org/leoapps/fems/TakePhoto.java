@@ -22,7 +22,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
+//import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
@@ -94,7 +94,7 @@ public class TakePhoto extends AppCompatActivity implements View.OnClickListener
     private String exhibitRef;
 
 
-    private final static String TAG = "TakePhoto - ";
+    //private final static String TAG = "TakePhoto - ";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -188,7 +188,7 @@ public class TakePhoto extends AppCompatActivity implements View.OnClickListener
             flCameraPreview.setOnTouchListener( new View.OnTouchListener() {
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
-                    Log.d("OnTouch: ", event.toString());
+                    //Log.d("OnTouch: ", event.toString());
                     if (camera != null) {
                         Camera.Parameters params = camera.getParameters();
                         if (params.getMaxNumFocusAreas() > 0)
@@ -296,7 +296,7 @@ public class TakePhoto extends AppCompatActivity implements View.OnClickListener
 
                         File[] picFiles = getOutputMediaFile(MEDIA_TYPE_IMAGE, filePrefix);
                         if (picFiles[0] == null || picFiles[1] == null) {
-                            Log.e(TAG, "Couldn't create media files; check storage permissions?");
+                            //Log.e(TAG, "Couldn't create media files; check storage permissions?");
                             return;
                         }
 
@@ -311,10 +311,10 @@ public class TakePhoto extends AppCompatActivity implements View.OnClickListener
                             {
                                 timeStamp = picFiles[0].getAbsolutePath().substring(picFiles[0].getAbsolutePath().lastIndexOf('/') + 1);
                             }
-                            Log.i("Timestamp", timeStamp);
+                            //Log.i("Timestamp", timeStamp);
                             //https://stackoverflow.com/questions/3674930/java-regex-meta-character-and-ordinary-dot
                             timeStamp = timeStamp.split("\\.")[0];
-                            Log.i("Timestamp", timeStamp);
+                            //Log.i("Timestamp", timeStamp);
 
                             byte[] toSave = null;
                             if(displayOverlay)
@@ -363,10 +363,10 @@ public class TakePhoto extends AppCompatActivity implements View.OnClickListener
                             Photograph p = new Photograph(0, exhibitID, timeStamp,  picFiles[0].getAbsolutePath());
                             Utils.database.photographDAO().addPhotograph(p);
                         } catch (FileNotFoundException e) {
-                            Log.e(TAG, "File not found: " + e.getMessage());
+                            //Log.e(TAG, "File not found: " + e.getMessage());
                             e.getStackTrace();
                         } catch (IOException e) {
-                            Log.e(TAG, "I/O error writing file: " + e.getMessage());
+                            //Log.e(TAG, "I/O error writing file: " + e.getMessage());
                             e.getStackTrace();
                         }
                     }
@@ -461,7 +461,7 @@ public class TakePhoto extends AppCompatActivity implements View.OnClickListener
 
         Camera.Size bestPictureSize = null;
         for(int i = 1; i < pictureSizeList.size(); i++){
-            Log.i("PictureSize: ", "Width: " + pictureSizeList.get(i).width + ", Height: " + pictureSizeList.get(i).height);
+            //Log.i("PictureSize: ", "Width: " + pictureSizeList.get(i).width + ", Height: " + pictureSizeList.get(i).height);
             if( pictureSizeList.get(i).width == pictureSizeList.get(i).height)
             {
                 if (bestPictureSize == null)
@@ -555,8 +555,8 @@ public class TakePhoto extends AppCompatActivity implements View.OnClickListener
 
     @Override
     public void onClick(View v) {
-        Log.i(TAG, "Pre Click Processing:");
-        reportFlags();
+        //Log.i(TAG, "Pre Click Processing:");
+        //reportFlags();
 
         if( v == ibTopLeft && displayOverlay)
         {
@@ -614,18 +614,18 @@ public class TakePhoto extends AppCompatActivity implements View.OnClickListener
         }
         setOverlayConstraints();
 
-        Log.i(TAG, "Post Click Processing:");
-        reportFlags();
+        //Log.i(TAG, "Post Click Processing:");
+        //reportFlags();
     }
 
-    private void reportFlags()
+    /*private void reportFlags()
     {
         Log.i(TAG,
                 "displayOverlay: " + displayOverlay +
                         ", displayTimestamp: " + displayTimestamp +
                         ", displayExhibitID: " + displayExhibitID +
                         ", currPosition: " + currPosition);
-    }
+    }*/
 
     public void onCheckBoxClicked(View v)
     {
@@ -687,7 +687,7 @@ public class TakePhoto extends AppCompatActivity implements View.OnClickListener
     public void setOverlayText()
     {
         String overlayText = "";
-        Log.d(TAG, "setOverlayText: '" +  exhibitRef + "'");
+        //Log.d(TAG, "setOverlayText: '" +  exhibitRef + "'");
         if(displayExhibitID)
         {
             overlayText += exhibitRef;

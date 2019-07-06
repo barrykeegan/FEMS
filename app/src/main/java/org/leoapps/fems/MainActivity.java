@@ -9,7 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
+//import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -84,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void displayCaseList()
     {
-        Log.i(TAG, "In display Case List");
+        //Log.i(TAG, "In display Case List");
         List<Case> cases = Utils.database.caseDAO().getAllCases();
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());

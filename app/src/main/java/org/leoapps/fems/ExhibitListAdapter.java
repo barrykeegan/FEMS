@@ -126,6 +126,7 @@ public class ExhibitListAdapter extends RecyclerView.Adapter<ExhibitListAdapter.
     public void onBindViewHolder(@NonNull ExhibitListAdapter.ViewHolder holder, int position) {
         final Exhibit exhibit = exhibitList.get(position);
         //set here to account for recycled views retaining incorrect thumbnail of exhibit
+        //https://stackoverflow.com/questions/29041027/android-getresources-getdrawable-deprecated-api-22/29041466
         holder.ivExhibitThumbnail.setImageDrawable(ResourcesCompat.getDrawable(holder.layout.getResources(), R.drawable.thumbnailplaceholder, null));
         holder.tvCaseListID.setText(Integer.toString(exhibit.CaseID));
         holder.tvExhibitListID.setText(Integer.toString(exhibit.ID));
