@@ -21,7 +21,7 @@ public class Utils{
     //Used to hold a static reference to the Room database for use throughout entire app
     public static AppDatabase database;
 
-    public static String[] CaseTypes = null;
+    public static String[] strCaseTypes = null;
 
     public static void clearDB()
     {
@@ -38,10 +38,15 @@ public class Utils{
         appContext = applicationContext;
         database = AppDatabase.getDatabase(appContext);
         List<CaseType> caseTypes = database.caseTypeDAO().getAllCaseTypes();
-        CaseTypes = new String[caseTypes.size()];
+        if (caseTypes.size() < 1)
+        {
+            database.caseTypeDAO().addAllCaseTypes(CaseType.populateCaseTypes());
+            caseTypes = database.caseTypeDAO().getAllCaseTypes();
+        }
+        strCaseTypes = new String[caseTypes.size()];
 
         for (int i = 0; i < caseTypes.size(); i++) {
-            CaseTypes[i] = caseTypes.get(i).Type;
+            strCaseTypes[i] = caseTypes.get(i).Type;
         }
     }
 

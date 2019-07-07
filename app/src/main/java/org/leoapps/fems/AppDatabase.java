@@ -42,28 +42,6 @@ public abstract class AppDatabase extends RoomDatabase {
         return Room.databaseBuilder(context, AppDatabase.class, "FEMSDB")
                 .allowMainThreadQueries()
                 .fallbackToDestructiveMigration()
-                .addCallback(new Callback() {
-                    @Override
-                    public void onCreate(@NonNull SupportSQLiteDatabase db) {
-                        super.onCreate(db);
-                        //Log.i(TAG, "In AppDatabase.buildDatabase callback, inside onCreate, before populating");
-                        Executors.newSingleThreadScheduledExecutor().execute(new Runnable() {
-                            @Override
-                            public void run() {
-
-                                getDatabase(context).caseTypeDAO().addAllCaseTypes(CaseType.populateCaseTypes());
-
-                            }
-                        });
-                        //Log.i(TAG, "In AppDatabase.buildDatabase, inside onCreate, after populating");
-                    }
-
-                    @Override
-                    public void onOpen(@NonNull SupportSQLiteDatabase db) {
-                        super.onOpen(db);
-                        //Log.i(TAG, "In AppDatabase.buildDatabase callback, inside onOpen");
-                    }
-                })
                 .build();
     }
 }

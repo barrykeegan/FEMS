@@ -56,10 +56,9 @@ public class AddCase extends AppCompatActivity  implements  DatePickerDialog.OnD
         btnDiscard = findViewById(R.id.btn_add_case_discard);
         btnDatePicker = findViewById(R.id.btn_add_case_date_picker);
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, Utils.CaseTypes);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, Utils.strCaseTypes);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spnrCaseType.setAdapter(adapter);
-        spnrCaseType.setSelection(0);
 
         currentDate = new SimpleDateFormat("dd/MM/yyyy").format(new Date());
 
@@ -85,6 +84,18 @@ public class AddCase extends AppCompatActivity  implements  DatePickerDialog.OnD
                 showDatePickerDialog();
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        spnrCaseType.post(new Runnable() {
+            @Override
+            public void run() {
+                spnrCaseType.setSelection(0, true);
+            }
+        });
+
     }
 
     private void showDatePickerDialog()
