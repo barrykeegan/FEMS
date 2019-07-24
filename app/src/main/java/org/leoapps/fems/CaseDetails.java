@@ -91,8 +91,8 @@ public class CaseDetails extends AppCompatActivity {
         ivShareCase.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(CaseDetails.this, "Sharing case", Toast.LENGTH_LONG).show();
                 shareAllCasePhotos();
+                Toast.makeText(v.getContext(), "Downloaded all photos for this case to 'FEMS' directory in external storage of device.", Toast.LENGTH_LONG).show();
             }
         });
 

@@ -113,8 +113,8 @@ public class ExhibitDetails extends AppCompatActivity {
         ivShareExhibit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(v.getContext(), "Sharing Exhibit Photos", Toast.LENGTH_LONG).show();
-                sharePhotos();
+                shareExhibitPhotos();
+                Toast.makeText(v.getContext(), "Downloaded exhibit photos to 'FEMS' directory of external storage on device.", Toast.LENGTH_LONG).show();
 
             }
         });
@@ -122,7 +122,6 @@ public class ExhibitDetails extends AppCompatActivity {
         ivEditExhibit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(v.getContext(), "Editing Exhibit", Toast.LENGTH_LONG).show();
                 Intent toUpdateExhibit = new Intent(v.getContext(), UpdateExhibit.class);
                 toUpdateExhibit.putExtra("From", "ExhibitDetails");
                 toUpdateExhibit.putExtra("ExhibitID", Integer.toString(exhibit.ID));
@@ -134,7 +133,6 @@ public class ExhibitDetails extends AppCompatActivity {
         ivDeleteExhibit.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                Toast.makeText(v.getContext(), "Deleting Exhibit", Toast.LENGTH_LONG).show();
                 verifyExhibitDelete(v);
             }
         });
@@ -196,7 +194,7 @@ public class ExhibitDetails extends AppCompatActivity {
         }
     }
 
-    private void sharePhotos()
+    private void shareExhibitPhotos()
     {
         new Thread(new Runnable() {
             @Override
@@ -217,6 +215,5 @@ public class ExhibitDetails extends AppCompatActivity {
                 });
             }
         }).start();
-
     }
 }

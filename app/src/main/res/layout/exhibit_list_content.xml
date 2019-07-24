@@ -86,7 +86,7 @@
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:layout_marginLeft="15dp"
-                    app:srcCompat="@drawable/ic_baseline_share_24px"
+                    app:srcCompat="@drawable/baseline_download_24"
                     android:contentDescription="Share Icon"/>
                 <ImageView
                     android:id="@+id/iv_exhibit_list_edit_exhibit"

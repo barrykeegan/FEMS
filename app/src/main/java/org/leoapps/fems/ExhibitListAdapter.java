@@ -4,6 +4,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.media.ThumbnailUtils;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintSet;
 import android.support.v4.content.res.ResourcesCompat;
@@ -86,7 +88,8 @@ public class ExhibitListAdapter extends RecyclerView.Adapter<ExhibitListAdapter.
             }
             if(v == ivShareExhibit)
             {
-                Toast.makeText(v.getContext(), "Sharing... " + whichExhibit, Toast.LENGTH_LONG).show();
+                shareExhibitPhotos();
+                Toast.makeText(v.getContext(), "Downloaded exhibit photos to 'FEMS' directory of external storage on device.", Toast.LENGTH_LONG).show();
             }
         }
 
@@ -108,6 +111,31 @@ public class ExhibitListAdapter extends RecyclerView.Adapter<ExhibitListAdapter.
                             notifyItemRemoved(getAdapterPosition());
                         }})
                     .setNegativeButton(android.R.string.no, null).show();
+        }
+
+        private void shareExhibitPhotos()
+        {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    Handler handler = new Handler(Looper.getMainLooper());
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            List<Photograph> photos = Utils.database.photographDAO().getPhotographsForExhibit(
+                                    Integer.parseInt(tvExhibitListID.getText().toString())
+                            );
+                            if (photos.size() > 0)
+                            {
+                                for (Photograph photo: photos)
+                                {
+                                    Utils.copyPhotoToExternal(photo.FileLocation);
+                                }
+                            }
+                        }
+                    });
+                }
+            }).start();
         }
     }
 

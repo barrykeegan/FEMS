@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
     public static final String TAG = "MainActivity-CaseList:";
 
     private RecyclerView rv;
-
+/*
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
-    }
+    }*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

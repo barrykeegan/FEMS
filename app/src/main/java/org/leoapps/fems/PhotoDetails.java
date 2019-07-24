@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.github.chrisbanes.photoview.PhotoView;
 
@@ -37,7 +38,7 @@ public class PhotoDetails extends AppCompatActivity {
     private TextView tvTimestamp;
     private TextView tvFileLocation;
     private Button btnDeletePhoto;
-    private Button btnSharePhoto;
+    private Button btnDownloadPhoto;
 
     private int photoID;
     private String fileLocation;
@@ -53,7 +54,7 @@ public class PhotoDetails extends AppCompatActivity {
         tvFileLocation = findViewById(R.id.tv_photo_details_file_loc);
 
         btnDeletePhoto = findViewById(R.id.btn_photo_details_delete);
-        btnSharePhoto = findViewById(R.id.btn_photo_details_share);
+        btnDownloadPhoto = findViewById(R.id.btn_photo_details_download);
 
         photoID = getIntent().getIntExtra("ID", -1);
         fileLocation = getIntent().getStringExtra("Location");
@@ -66,10 +67,10 @@ public class PhotoDetails extends AppCompatActivity {
             }
         });
 
-        btnSharePhoto.setOnClickListener(new View.OnClickListener() {
+        btnDownloadPhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sharePhoto(v);
+                downloadPhoto(v);
             }
         });
     }
@@ -97,8 +98,10 @@ public class PhotoDetails extends AppCompatActivity {
                 .setNegativeButton(android.R.string.no, null).show();
     }
 
+    /*functionality for future versions
     private void sharePhoto(View v)
     {
+
         new AlertDialog.Builder(v.getContext())
                 .setTitle("Confirm Share")
                 .setMessage("Are you sure you want to send this Photo by email?")
@@ -114,7 +117,7 @@ public class PhotoDetails extends AppCompatActivity {
 
 
                         //new File(path).mkdirs();
-                        /*Uri uri = Uri.parse(fileLocation);
+                        Uri uri = Uri.parse(fileLocation);
                         Intent intent = new Intent(Intent.ACTION_SEND);
                         intent.setType("image/jpeg");
                         intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
@@ -126,8 +129,15 @@ public class PhotoDetails extends AppCompatActivity {
                         intent.putExtra(Intent.EXTRA_TEXT, "Please find attached image...");
                         intent.putExtra(Intent.EXTRA_STREAM, uri);
                         //Log.d(TAG, "uri: " + uri.toString() + ", fileLocation: " + fileLocation);
-                        startActivity(Intent.createChooser(intent, "Share Image"));*/
+                        startActivity(Intent.createChooser(intent, "Share Image"));
                     }})
                 .setNegativeButton(android.R.string.no, null).show();
+    }
+    */
+
+    private void downloadPhoto(View v)
+    {
+        Utils.copyPhotoToExternal(fileLocation);
+        Toast.makeText(v.getContext(), "Photo downloaded to 'FEMS' directory of your device's external storage.", Toast.LENGTH_LONG).show();
     }
 }

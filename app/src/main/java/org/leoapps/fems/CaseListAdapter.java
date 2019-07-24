@@ -2,6 +2,8 @@ package org.leoapps.fems;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
@@ -56,7 +58,6 @@ public class CaseListAdapter extends RecyclerView.Adapter<CaseListAdapter.ViewHo
 
         @Override
         public void onClick(View v) {
-            String whichCase = "Case " + tvCaseListID.getText().toString();
             if( v == llCaseDetails)
             {
                 Intent toCaseDetails = new Intent(v.getContext(), CaseDetails.class);
@@ -76,7 +77,8 @@ public class CaseListAdapter extends RecyclerView.Adapter<CaseListAdapter.ViewHo
             }
             if(v == imgShareCase)
             {
-                Toast.makeText(v.getContext(), "Sharing... " + whichCase, Toast.LENGTH_LONG).show();
+                shareAllCasePhotos();
+                Toast.makeText(v.getContext(), "Downloaded all photos for this case to 'FEMS' directory in external storage of device.", Toast.LENGTH_LONG).show();
             }
         }
 
@@ -98,6 +100,37 @@ public class CaseListAdapter extends RecyclerView.Adapter<CaseListAdapter.ViewHo
                             notifyItemRemoved(getAdapterPosition());
                         }})
                     .setNegativeButton(android.R.string.no, null).show();
+        }
+
+        private void shareAllCasePhotos()
+        {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    Handler handler = new Handler(Looper.getMainLooper());
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            List<Exhibit> exhibits= Utils.database.exhibitDAO().getExhibitsForCase(
+                                    Integer.parseInt(tvCaseListID.getText().toString())
+                            );
+
+                            for (Exhibit exhibit: exhibits)
+                            {
+                                List<Photograph> photos = Utils.database.photographDAO().getPhotographsForExhibit(exhibit.ID);
+                                if (photos.size() > 0)
+                                {
+                                    for (Photograph photo: photos)
+                                    {
+                                        Utils.copyPhotoToExternal(photo.FileLocation);
+                                    }
+                                }
+                            }
+                        }
+                    });
+                }
+            }).start();
+
         }
     }
 

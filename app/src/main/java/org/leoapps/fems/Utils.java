@@ -21,7 +21,30 @@ public class Utils{
     //Used to hold a static reference to the Room database for use throughout entire app
     public static AppDatabase database;
 
-    public static String[] strCaseTypes = null;
+    public static String[] strCaseTypes = new String[]{
+            "Other",
+            "Child Exploitation",
+            "Fraud",
+            "Sexual Offences",
+            "Murder",
+            "Terrorism and Offences Against the State",
+            "Cyber Crime",
+            "Theft",
+            "Public Order",
+            "Road Traffic",
+            "Firearms and Offensive Weapons",
+            "Criminal Damage",
+            "Arson",
+            "Drugs",
+            "Assault",
+            "Kidnapping",
+            "Burglary",
+            "Affray / Riot / Violent Disorder",
+            "Robbery",
+            "Harassment",
+            "Domestic",
+            "Aggravated Burglary"
+    };
 
     public static void clearDB()
     {
@@ -37,16 +60,12 @@ public class Utils{
 
         appContext = applicationContext;
         database = AppDatabase.getDatabase(appContext);
+        //check that caseTypes have been added to DB
         List<CaseType> caseTypes = database.caseTypeDAO().getAllCaseTypes();
-        if (caseTypes.size() < 1)
+        //if no casetypes in DB then add them
+        if (caseTypes.size() == 0)
         {
             database.caseTypeDAO().addAllCaseTypes(CaseType.populateCaseTypes());
-            caseTypes = database.caseTypeDAO().getAllCaseTypes();
-        }
-        strCaseTypes = new String[caseTypes.size()];
-
-        for (int i = 0; i < caseTypes.size(); i++) {
-            strCaseTypes[i] = caseTypes.get(i).Type;
         }
     }
 
