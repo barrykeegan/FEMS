@@ -4,6 +4,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.media.ThumbnailUtils;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
@@ -16,18 +18,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.List;
+import java.util.logging.LogRecord;
 
 public class PhotographListAdapter extends RecyclerView.Adapter<PhotographListAdapter.ViewHolder> {
     private List<Photograph> photoList;
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public View layout;
-
         public LinearLayout llPhoto;
-
         public ImageView ivExhibitPhoto;
-
         public TextView tvPhotoID;
+
+        public Photograph p;
 
         public ViewHolder(View v)
         {
@@ -40,6 +42,7 @@ public class PhotographListAdapter extends RecyclerView.Adapter<PhotographListAd
 
             tvPhotoID = v.findViewById(R.id.tv_photograph_id);
 
+            layout.setOnClickListener(this);
             /*llExhibitDetails.setOnClickListener(this);
             ivShareExhibit.setOnClickListener(this);
             ivEditExhibit.setOnClickListener(this);
@@ -48,6 +51,11 @@ public class PhotographListAdapter extends RecyclerView.Adapter<PhotographListAd
 
         @Override
         public void onClick(View v) {
+            Intent intent = new Intent(v.getContext(), PhotoDetails.class);
+            intent.putExtra("ID", p.ID);
+            intent.putExtra("Timestamp", p.DateTimeTaken);
+            intent.putExtra("Location", p.FileLocation);
+            v.getContext().startActivity(intent);
             /*String whichExhibit = "Exhibit " + tvExhibitListID.getText().toString();
             if( v == llExhibitDetails)
             {
@@ -107,10 +115,25 @@ public class PhotographListAdapter extends RecyclerView.Adapter<PhotographListAd
     }
 
     @Override
-    public void onBindViewHolder(@NonNull PhotographListAdapter.ViewHolder holder, int position) {
-        final Photograph photo = photoList.get(position);
-        holder.tvPhotoID.setText(Integer.toString(photo.ID));
-        holder.ivExhibitPhoto.setImageBitmap(ThumbnailUtils.extractThumbnail(BitmapFactory.decodeFile(photo.FileLocation), 90, 90));
+    public void onBindViewHolder(@NonNull final PhotographListAdapter.ViewHolder holder, final int position) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Handler handler = new Handler(Looper.getMainLooper());
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        final Photograph photo = photoList.get(position);
+                        holder.p = photo;
+                        holder.tvPhotoID.setText(Integer.toString(photo.ID));
+                        String thumbLocation = photo.FileLocation.substring(0, photo.FileLocation.lastIndexOf('/') +1 );
+                        thumbLocation += "thumb" + photo.FileLocation.substring(photo.FileLocation.lastIndexOf('/') +1);
+                        holder.ivExhibitPhoto.setImageBitmap(BitmapFactory.decodeFile(thumbLocation));
+                    }
+                });
+            }
+        }).start();
 
     }
 

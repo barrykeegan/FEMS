@@ -3,7 +3,7 @@ package org.leoapps.fems;
 import android.content.Context;
 
 import android.hardware.Camera;
-import android.util.Log;
+//import android.util.Log;
 import android.view.Display;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -16,7 +16,7 @@ import static android.content.Context.WINDOW_SERVICE;
 
 /** A basic Camera preview class */
 public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback {
-    public static final String TAG = "CameraPreview";
+    //public static final String TAG = "CameraPreview";
     private SurfaceHolder mHolder;
     private Camera mCamera;
 
@@ -39,7 +39,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
             mCamera.setPreviewDisplay(holder);
             mCamera.startPreview();
         } catch (IOException e) {
-            Log.d(TAG, "Error setting camera preview: " + e.getMessage());
+            //Log.d(TAG, "Error setting camera preview: " + e.getMessage());
         }
     }
 
@@ -74,7 +74,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
             mCamera.startPreview();
 
         } catch (Exception e){
-            Log.d(TAG, "Error starting camera preview: " + e.getMessage());
+            //Log.d(TAG, "Error starting camera preview: " + e.getMessage());
         }
     }
 }

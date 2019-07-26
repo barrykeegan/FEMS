@@ -9,7 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
+//import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
     public static final String TAG = "MainActivity-CaseList:";
 
     private RecyclerView rv;
-
+/*
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
-    }
+    }*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,15 +76,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
+    protected void onResume() {
+        super.onResume();
 
         displayCaseList();
     }
 
     private void displayCaseList()
     {
-        Log.i(TAG, "In display Case List");
+        //Log.i(TAG, "In display Case List");
         List<Case> cases = Utils.database.caseDAO().getAllCases();
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());

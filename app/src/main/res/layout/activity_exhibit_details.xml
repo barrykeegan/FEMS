@@ -231,7 +231,7 @@
                         android:id="@+id/iv_exhibit_details_share_exhibit"
                         android:layout_width="20dp"
                         android:layout_height="20dp"
-                        app:srcCompat="@drawable/ic_baseline_share_24px"
+                        app:srcCompat="@drawable/baseline_download_24"
                         android:contentDescription="Share Icon"
                         android:layout_weight="1"/>
                     <ImageView

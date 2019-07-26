@@ -167,7 +167,7 @@
                     android:id="@+id/iv_case_details_share_case"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    app:srcCompat="@drawable/ic_baseline_share_24px"
+                    app:srcCompat="@drawable/baseline_download_24"
                     android:contentDescription="Share Icon"
                     android:layout_weight="1"/>
                 <ImageView

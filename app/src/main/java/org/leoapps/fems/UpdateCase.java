@@ -49,7 +49,7 @@ public class UpdateCase extends AppCompatActivity  implements  DatePickerDialog.
         btnDiscard = findViewById(R.id.btn_update_case_discard);
         btnDatePicker = findViewById(R.id.btn_update_case_date_picker);
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, Utils.CaseTypes);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, Utils.strCaseTypes);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spnrCaseType.setAdapter(adapter);
 

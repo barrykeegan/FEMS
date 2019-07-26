@@ -6,6 +6,8 @@ import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.ThumbnailUtils;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -13,7 +15,7 @@ import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+//import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -26,7 +28,7 @@ import java.util.List;
 import java.util.ListIterator;
 
 public class ExhibitDetails extends AppCompatActivity {
-    private static final String TAG = "ExhibitDetails";
+    //private static final String TAG = "ExhibitDetails";
     private final int THUMBSIZE = 64;
 
     private TextView tvLocalRef;
@@ -54,6 +56,11 @@ public class ExhibitDetails extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_exhibit_details);
+
+        if(Utils.database == null)
+        {
+            Utils.initialiseUtilsProperties(getApplicationContext());
+        }
 
         tvLocalRef = findViewById(R.id.tv_exhibit_details_local_reference);
         tvExternalRef = findViewById(R.id.tv_exhibit_details_external_reference);
@@ -106,7 +113,8 @@ public class ExhibitDetails extends AppCompatActivity {
         ivShareExhibit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(v.getContext(), "Sharing Exhibit", Toast.LENGTH_LONG).show();
+                shareExhibitPhotos();
+                Toast.makeText(v.getContext(), "Downloaded exhibit photos to 'FEMS' directory of external storage on device.", Toast.LENGTH_LONG).show();
 
             }
         });
@@ -114,7 +122,6 @@ public class ExhibitDetails extends AppCompatActivity {
         ivEditExhibit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(v.getContext(), "Editing Exhibit", Toast.LENGTH_LONG).show();
                 Intent toUpdateExhibit = new Intent(v.getContext(), UpdateExhibit.class);
                 toUpdateExhibit.putExtra("From", "ExhibitDetails");
                 toUpdateExhibit.putExtra("ExhibitID", Integer.toString(exhibit.ID));
@@ -126,12 +133,9 @@ public class ExhibitDetails extends AppCompatActivity {
         ivDeleteExhibit.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                Toast.makeText(v.getContext(), "Deleting Exhibit", Toast.LENGTH_LONG).show();
                 verifyExhibitDelete(v);
             }
         });
-
-        displayPhotoList();
 
     }
 
@@ -164,7 +168,7 @@ public class ExhibitDetails extends AppCompatActivity {
 
     private void displayPhotoList()
     {
-        Log.i(TAG, "In display exhibit List");
+        //Log.i(TAG, "In display exhibit List");
         List<Photograph> photographs = Utils.database.photographDAO().getPhotographsForExhibit(exhibit.ID);
 
 
@@ -188,5 +192,28 @@ public class ExhibitDetails extends AppCompatActivity {
             RecyclerView.Adapter myAdapter = new NoContentAdapter(noContent);
             rvPhotos.setAdapter(myAdapter);
         }
+    }
+
+    private void shareExhibitPhotos()
+    {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Handler handler = new Handler(Looper.getMainLooper());
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        List<Photograph> photos = Utils.database.photographDAO().getPhotographsForExhibit(intExhibitID);
+                        if (photos.size() > 0)
+                        {
+                            for (Photograph photo: photos)
+                            {
+                                Utils.copyPhotoToExternal(photo.FileLocation);
+                            }
+                        }
+                    }
+                });
+            }
+        }).start();
     }
 }

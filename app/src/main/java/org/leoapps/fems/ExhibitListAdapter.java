@@ -2,7 +2,13 @@ package org.leoapps.fems;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
+import android.media.ThumbnailUtils;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintSet;
+import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -82,7 +88,8 @@ public class ExhibitListAdapter extends RecyclerView.Adapter<ExhibitListAdapter.
             }
             if(v == ivShareExhibit)
             {
-                Toast.makeText(v.getContext(), "Sharing... " + whichExhibit, Toast.LENGTH_LONG).show();
+                shareExhibitPhotos();
+                Toast.makeText(v.getContext(), "Downloaded exhibit photos to 'FEMS' directory of external storage on device.", Toast.LENGTH_LONG).show();
             }
         }
 
@@ -105,6 +112,31 @@ public class ExhibitListAdapter extends RecyclerView.Adapter<ExhibitListAdapter.
                         }})
                     .setNegativeButton(android.R.string.no, null).show();
         }
+
+        private void shareExhibitPhotos()
+        {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    Handler handler = new Handler(Looper.getMainLooper());
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            List<Photograph> photos = Utils.database.photographDAO().getPhotographsForExhibit(
+                                    Integer.parseInt(tvExhibitListID.getText().toString())
+                            );
+                            if (photos.size() > 0)
+                            {
+                                for (Photograph photo: photos)
+                                {
+                                    Utils.copyPhotoToExternal(photo.FileLocation);
+                                }
+                            }
+                        }
+                    });
+                }
+            }).start();
+        }
     }
 
     public ExhibitListAdapter(List<Exhibit> dataset) {exhibitList = dataset;}
@@ -121,57 +153,24 @@ public class ExhibitListAdapter extends RecyclerView.Adapter<ExhibitListAdapter.
     @Override
     public void onBindViewHolder(@NonNull ExhibitListAdapter.ViewHolder holder, int position) {
         final Exhibit exhibit = exhibitList.get(position);
+        //set here to account for recycled views retaining incorrect thumbnail of exhibit
+        //https://stackoverflow.com/questions/29041027/android-getresources-getdrawable-deprecated-api-22/29041466
+        holder.ivExhibitThumbnail.setImageDrawable(ResourcesCompat.getDrawable(holder.layout.getResources(), R.drawable.thumbnailplaceholder, null));
         holder.tvCaseListID.setText(Integer.toString(exhibit.CaseID));
         holder.tvExhibitListID.setText(Integer.toString(exhibit.ID));
+
+        List<Photograph> photos = Utils.database.photographDAO().getPhotographsForExhibit(exhibit.ID);
+        if(photos.size()>0)
+        {
+            String thumbLocation = photos.get(0).FileLocation.substring(0, photos.get(0).FileLocation.lastIndexOf('/') +1 );
+            thumbLocation += "thumb" + photos.get(0).FileLocation.substring(photos.get(0).FileLocation.lastIndexOf('/') +1);
+            holder.ivExhibitThumbnail.setImageBitmap(BitmapFactory.decodeFile(thumbLocation));
+        }
 
         holder.tvExhibitLocalID.setText(exhibit.LocalExhibitID);
         holder.tvExhibitExternalID.setText(exhibit.ExternalExhibitID);
         holder.tvExhibitDescription.setText(exhibit.Description);
 
-        /*if(aCase.ReferenceID == null || aCase.ReferenceID.isEmpty())
-        {
-            holder.caseListReference.setText(R.string.value_not_set);
-        }
-        else
-        {
-            holder.caseListReference.setText(aCase.ReferenceID);
-        }
-
-        if(aCase.OperationName == null || aCase.OperationName.isEmpty())
-        {
-            holder.caseListOperation.setText(R.string.value_not_set);
-        }
-        else
-        {
-            holder.caseListOperation.setText(aCase.OperationName);
-        }
-
-        if(aCase.CaseType == null || aCase.CaseType.isEmpty())
-        {
-            holder.caseListType.setText(R.string.value_not_set);
-        }
-        else
-        {
-            holder.caseListType.setText(aCase.CaseType);
-        }
-
-        if(aCase.CaseDate == null || aCase.CaseDate.isEmpty())
-        {
-            holder.caseListDate.setText(R.string.value_not_set);
-        }
-        else
-        {
-            holder.caseListDate.setText(aCase.CaseDate);
-        }
-
-        if(aCase.Location == null || aCase.Location.isEmpty())
-        {
-            holder.caseListLocation.setText(R.string.value_not_set);
-        }
-        else
-        {
-            holder.caseListLocation.setText(aCase.Location);
-        }*/
     }
 
     @Override

@@ -10,17 +10,34 @@
     <!--https://stackoverflow.com/questions/49981002/frame-layout-set-height-same-as-width-->
     <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/cs_photo_preview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <FrameLayout
             android:id="@+id/fl_take_photo_camera_preview"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <TextView
+            android:id="@+id/tv_overlay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="4dp"
+            android:layout_margin="8dp"
+            android:textColor="#FFF"
+            android:text="TEST TEXT"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
     </android.support.constraint.ConstraintLayout>
 
     <LinearLayout
@@ -28,11 +45,124 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_gravity="center">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-black"
+                android:text="Overlay:"/>
+            <CheckBox
+                android:id="@+id/cb_timestamp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Timestamp"
+                android:onClick="onCheckBoxClicked"/>
+            <CheckBox
+                android:id="@+id/cb_exhibit_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Exhibit ID"
+                android:onClick="onCheckBoxClicked"/>
+        </LinearLayout>
         <Button
             android:id="@+id/btn_take_photo_take_photo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_margin="10dp"
             android:text="Take Photo"/>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_gravity="center">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-black"
+                android:text="Overlay Position:"/>
+            <GridLayout
+                android:id="@+id/gl_position_picker"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:columnCount="3"
+                android:rowCount="3">
+                <Button
+                    android:id="@+id/ib_top_left"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_margin="8dp"
+                    android:elevation="2dp"
+                    android:layout_gravity="top|left"
+                    android:background="@drawable/top_left"/>
+                <Button
+                    android:id="@+id/ib_top"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_margin="8dp"
+                    android:elevation="2dp"
+                    android:layout_gravity="top|left"
+                    android:background="@drawable/top"/>
+                <Button
+                    android:id="@+id/ib_top_right"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_margin="8dp"
+                    android:elevation="2dp"
+                    android:layout_gravity="top|left"
+                    android:background="@drawable/top_right"/>
+                <Button
+                    android:id="@+id/ib_left"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_margin="8dp"
+                    android:elevation="2dp"
+                    android:layout_gravity="top|left"
+                    android:background="@drawable/left"/>
+                <Button
+                    android:id="@+id/ib_centre"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_margin="8dp"
+                    android:elevation="2dp"
+                    android:layout_gravity="top|left"
+                    android:background="@drawable/centre"/>
+                <Button
+                    android:id="@+id/ib_right"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_margin="8dp"
+                    android:elevation="2dp"
+                    android:layout_gravity="top|left"
+                    android:background="@drawable/right"/>
+                <Button
+                    android:id="@+id/ib_bottom_left"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_margin="8dp"
+                    android:elevation="2dp"
+                    android:layout_gravity="top|left"
+                    android:background="@drawable/bottom_left"/>
+                <Button
+                    android:id="@+id/ib_bottom"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_margin="8dp"
+                    android:elevation="2dp"
+                    android:layout_gravity="top|left"
+                    android:background="@drawable/bottom"/>
+                <Button
+                    android:id="@+id/ib_bottom_right"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_margin="8dp"
+                    android:elevation="2dp"
+                    android:layout_gravity="top|left"
+                    android:background="@drawable/bottom_right"/>
+            </GridLayout>
+        </LinearLayout>
 
     </LinearLayout>
 
