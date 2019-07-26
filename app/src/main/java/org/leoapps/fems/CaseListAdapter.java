@@ -59,17 +59,19 @@ public class CaseListAdapter extends RecyclerView.Adapter<CaseListAdapter.ViewHo
             String whichCase = "Case " + tvCaseListID.getText().toString();
             if( v == llCaseDetails)
             {
-                Toast.makeText(v.getContext(), "Details for... " + whichCase, Toast.LENGTH_LONG).show();
+                Intent toCaseDetails = new Intent(v.getContext(), CaseDetails.class);
+                toCaseDetails.putExtra("CaseID", tvCaseListID.getText().toString());
+                v.getContext().startActivity(toCaseDetails);
             }
             if (v == imgDeleteCase)
             {
-                Toast.makeText(v.getContext(), "Deleting... " + whichCase, Toast.LENGTH_LONG).show();
                 verifyCaseDelete(v);
             }
             if(v == imgEditCase)
             {
                 Intent toUpdateCase = new Intent(v.getContext(), UpdateCase.class);
                 toUpdateCase.putExtra("CaseID", tvCaseListID.getText().toString());
+                toUpdateCase.putExtra("From", "CaseList");
                 v.getContext().startActivity(toUpdateCase);
             }
             if(v == imgShareCase)
@@ -114,6 +116,7 @@ public class CaseListAdapter extends RecyclerView.Adapter<CaseListAdapter.ViewHo
     public void onBindViewHolder(@NonNull CaseListAdapter.ViewHolder holder, int position) {
         final Case aCase = caseList.get(position);
         holder.tvCaseListID.setText(Integer.toString(aCase.ID));
+
         if(aCase.ReferenceID == null || aCase.ReferenceID.isEmpty())
         {
             holder.caseListReference.setText(R.string.value_not_set);

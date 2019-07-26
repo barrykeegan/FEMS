@@ -37,5 +37,6 @@ dependencies {
     annotationProcessor "android.arch.lifecycle:compiler:$lifecycle_version"
     annotationProcessor "android.arch.persistence.room:compiler:$lifecycle_version"
 
+    //Allow for access and viewing of DB on browser of computer connected to same network as phone
     debugImplementation 'com.amitshekhar.android:debug-db:1.0.6'
 }

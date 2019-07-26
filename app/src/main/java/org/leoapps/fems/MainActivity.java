@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = findViewById(R.id.fab);
+        FloatingActionButton fab = findViewById(R.id.fab_case_list);
 
         //set for backgroundTint backwards compatibility as per:
         //https://stackoverflow.com/questions/27735890/lollipops-backgroundtint-has-no-effect-on-a-button/29756195#29756195

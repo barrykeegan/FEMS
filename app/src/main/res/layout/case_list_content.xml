@@ -103,23 +103,23 @@
                 android:id="@+id/img_case_list_share_case"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
+                android:layout_marginLeft="40dp"
                 app:srcCompat="@drawable/ic_baseline_share_24px"
-                android:contentDescription="Share Icon"
-                android:layout_weight="1"/>
+                android:contentDescription="Share Icon"/>
             <ImageView
                 android:id="@+id/img_case_list_edit_case"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
+                android:layout_marginLeft="60dp"
                 app:srcCompat="@drawable/baseline_edit_24"
-                android:contentDescription="Edit Icon"
-                android:layout_weight="1"/>
+                android:contentDescription="Edit Icon"/>
             <ImageView
                 android:id="@+id/img_case_list_delete_case"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
+                android:layout_marginLeft="60dp"
                 app:srcCompat="@drawable/baseline_delete_outline_24"
-                android:contentDescription="Delete Icon"
-                android:layout_weight="1"/>
+                android:contentDescription="Delete Icon"/>
         </LinearLayout>
 
     </LinearLayout>

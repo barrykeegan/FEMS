@@ -14,12 +14,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:text="Your Case Reference:"
+            android:text="Local Exhibit ID:"
             android:textColor="@color/colorSecondaryDark"
             android:fontFamily="sans-serif-black"
             android:textSize="16sp"/>
         <EditText
-            android:id="@+id/et_update_case_internal_ref"
+            android:id="@+id/et_add_exhibit_local_id"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
@@ -32,17 +32,17 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:text="External Case Reference:"
+            android:text="External Exhibit ID:"
             android:textColor="@color/colorSecondaryDark"
             android:fontFamily="sans-serif-black"
             android:textSize="16sp"/>
         <EditText
-            android:id="@+id/et_update_case_external_ref"
+            android:id="@+id/et_add_exhibit_external_id"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="10dp"
-            android:inputType="text"
+            android:inputType="textCapCharacters"
             android:maxLines="1"/>
 
 
@@ -50,23 +50,24 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:text="Case Type"
+            android:text="Description"
             android:textColor="@color/colorSecondaryDark"
             android:fontFamily="sans-serif-black"
             android:textSize="16sp"/>
 
-        <Spinner
-            android:id="@+id/spnr_update_case_type"
+        <EditText
+            android:id="@+id/et_add_exhibit_description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
-            android:layout_marginRight="10dp"/>
+            android:layout_marginRight="10dp"
+            android:inputType="text"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:text="Incident / Search Date"
+            android:text="Date Received"
             android:textColor="@color/colorSecondaryDark"
             android:fontFamily="sans-serif-black"
             android:textSize="16sp"/>
@@ -76,7 +77,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
             <EditText
-                android:id="@+id/et_update_case_date"
+                android:id="@+id/et_add_exhibit_date_received"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:inputType="date"
@@ -85,16 +86,15 @@
                 android:layout_weight="2"/>
 
             <Button
-                android:id="@+id/btn_update_case_date_picker"
+                android:id="@+id/btn_add_exhibit_date_received_picker"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
                 android:background="@color/colorAccent"
-                android:text="Choose Date"
+                android:text="Choose Date Received"
                 android:textColor="#fff"
                 android:layout_weight="1"/>
-
         </LinearLayout>
 
 
@@ -103,13 +103,48 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:text="Incident / Search Location"
+            android:text="Time Received"
+            android:textColor="@color/colorSecondaryDark"
+            android:fontFamily="sans-serif-black"
+            android:textSize="16sp"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <EditText
+                android:id="@+id/et_add_exhibit_time_received"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:focusable="false"
+                android:inputType="time"
+                android:layout_weight="2"/>
+
+            <Button
+                android:id="@+id/btn_add_exhibit_time_received_picker"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:background="@color/colorAccent"
+                android:text="Choose Time Received"
+                android:textColor="#fff"
+                android:layout_weight="1"/>
+        </LinearLayout>
+
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:text="Location Received"
             android:textColor="@color/colorSecondaryDark"
             android:fontFamily="sans-serif-black"
             android:textSize="16sp"/>
 
         <EditText
-            android:id="@+id/et_update_case_location"
+            android:id="@+id/et_add_exhibit_location_received"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
@@ -121,13 +156,65 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:text="Operation Name"
+            android:text="Received From"
             android:textColor="@color/colorSecondaryDark"
             android:fontFamily="sans-serif-black"
             android:textSize="16sp"/>
 
         <EditText
-            android:id="@+id/et_update_case_operation"
+            android:id="@+id/et_add_exhibit_received_from"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="10dp"
+            android:inputType="text"
+            android:maxLines="1"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:text="Date Returned"
+            android:textColor="@color/colorSecondaryDark"
+            android:fontFamily="sans-serif-black"
+            android:textSize="16sp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <EditText
+                android:id="@+id/et_add_exhibit_date_returned"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="date"
+                android:focusable="false"
+                android:layout_marginLeft="20dp"
+                android:layout_weight="2"/>
+
+            <Button
+                android:id="@+id/btn_add_exhibit_date_returned_picker"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:background="@color/colorAccent"
+                android:text="Choose Date Returned"
+                android:textColor="#fff"
+                android:layout_weight="1"/>
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:text="Given To/Location Stored"
+            android:textColor="@color/colorSecondaryDark"
+            android:fontFamily="sans-serif-black"
+            android:textSize="16sp"/>
+
+        <EditText
+            android:id="@+id/et_add_exhibit_returned_to"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
@@ -136,23 +223,23 @@
             android:maxLines="1"/>
 
 
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginTop="10dp">
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp">
             <Button
-                android:id="@+id/btn_update_case_update"
+                android:id="@+id/btn_add_exhibit_add"
                 android:layout_width="130dp"
                 android:layout_height="44dp"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
                 android:background="@color/colorAccent"
                 android:textColor="#fff"
-                android:text="Update Case"/>
+                android:text="Add Exhibit"/>
             <Button
-                android:id="@+id/btn_update_case_discard"
+                android:id="@+id/btn_add_exhibit_discard"
                 android:layout_width="130dp"
                 android:layout_height="44dp"
                 android:layout_marginLeft="15dp"
