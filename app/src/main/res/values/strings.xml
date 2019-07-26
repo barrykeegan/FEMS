@@ -7,6 +7,7 @@
     <string name="title_activity_add_exhibit">FEMS - Add New Exhibit</string>
     <string name="title_activity_update_case">FEMS - Update Case</string>
     <string name="title_activity_update_exhibit">FEMS - Update Exhibit</string>
+    <string name="title_activity_exhibit_details">FEMS - Exhibit Details</string>
     <string name="value_not_set">Not Set</string>
     <string name="title_activity_case_details">FEMS - Case Details</string>
     <string name="lbl_case_details_external_reference">External Reference</string>

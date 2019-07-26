@@ -113,7 +113,7 @@ public class CaseDetails extends AppCompatActivity {
 
     private void displayExhibitList()
     {
-        Log.i(TAG, "In display Case List");
+        Log.i(TAG, "In display exhibit List");
         List<Exhibit> exhibits = Utils.database.exhibitDAO().getExhibitsForCase(intCaseID);
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
