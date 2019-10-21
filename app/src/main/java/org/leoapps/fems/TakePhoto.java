@@ -117,12 +117,11 @@ public class TakePhoto extends AppCompatActivity implements View.OnClickListener
             ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE}, STORAGE_PERMISSION);
         }
 
-
         exhibitID = getIntent().getIntExtra("ExhibitID", -1);
         String extRef = getIntent().getStringExtra("ExternalRef");
         String localRef = getIntent().getStringExtra("LocalRef");
 
-        filePrefix = extRef  + localRef;
+
         if(!extRef.isEmpty() && !localRef.isEmpty())
         {
             exhibitRef = extRef + "_" + localRef;
@@ -131,7 +130,7 @@ public class TakePhoto extends AppCompatActivity implements View.OnClickListener
         {
             exhibitRef = extRef + localRef;
         }
-
+        filePrefix = exhibitRef;
 
         ibTopLeft = findViewById(R.id.ib_top_left);
         ibTop = findViewById(R.id.ib_top);
@@ -304,6 +303,7 @@ public class TakePhoto extends AppCompatActivity implements View.OnClickListener
                         File[] picFiles = getOutputMediaFile(MEDIA_TYPE_IMAGE, filePrefix);
                         if (picFiles[0] == null || picFiles[1] == null) {
                             //Log.e(TAG, "Couldn't create media files; check storage permissions?");
+                            //SHOULD THIS BE A SHOW STOPPING ERROR???
                             return;
                         }
 
@@ -311,8 +311,8 @@ public class TakePhoto extends AppCompatActivity implements View.OnClickListener
                             FileOutputStream fosLarge = new FileOutputStream(picFiles[0]);
                             FileOutputStream fosThumb = new FileOutputStream(picFiles[1]);
                             String timeStamp;
-                            if(picFiles[0].getAbsolutePath().indexOf('_') != -1) {
-                                timeStamp = picFiles[0].getAbsolutePath().split("_")[1];
+                            if(picFiles[0].getAbsolutePath().lastIndexOf('_') != -1) {
+                                timeStamp = picFiles[0].getAbsolutePath().substring(picFiles[0].getAbsolutePath().lastIndexOf('_') + 1);
                             }
                             else
                             {
@@ -337,9 +337,6 @@ public class TakePhoto extends AppCompatActivity implements View.OnClickListener
                                     {
                                         textToAdd += "-";
                                     }
-
-
-
                                     textToAdd += timeStamp.substring(0,4) + "/" + timeStamp.substring(4,6) +"/" +timeStamp.substring(6, 8) + "-";
                                     textToAdd += timeStamp.substring(9,11) + ":" + timeStamp.substring(11,13) +":" +timeStamp.substring(13);
                                 }
@@ -416,13 +413,18 @@ public class TakePhoto extends AppCompatActivity implements View.OnClickListener
     }*/
 
     /** Create a File for saving an image or video */
-    private static File[] getOutputMediaFile(int type, String filePrefix){
+    private File[] getOutputMediaFile(int type, String filePrefix){
         String timeStamp = new SimpleDateFormat("yyyyMMdd-HHmmss").format(new Date());
         String largefilename = filePrefix.isEmpty() ? timeStamp + ".jpg" : filePrefix + "_" + timeStamp + ".jpg";
         String thumbfilename = "thumb" + largefilename;
+        File exhibitDir = new File(Utils.appContext.getFilesDir(), exhibitRef);
+        if(!exhibitDir.exists())
+        {
+            exhibitDir.mkdirs();
+        }
         File[] files = new File[2];
-        files[0] = new File(Utils.appContext.getFilesDir(), largefilename);
-        files[1] = new File(Utils.appContext.getFilesDir(), thumbfilename);
+        files[0] = new File(exhibitDir, largefilename);
+        files[1] = new File(exhibitDir, thumbfilename);
 
         return files;
     }
@@ -808,7 +810,5 @@ public class TakePhoto extends AppCompatActivity implements View.OnClickListener
                 break;
         }
         cs.applyTo(csPreview);
-
-
     }
 }
