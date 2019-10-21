@@ -21,6 +21,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -157,6 +158,16 @@ public class ExhibitDetails extends AppCompatActivity {
 
                     public void onClick(DialogInterface dialog, int whichButton) {
                         String caseID = Integer.toString(exhibit.CaseID);
+                        List<Photograph> photosToDelete = Utils.database.photographDAO().getPhotographsForExhibit(exhibit.ID);
+                        for (Photograph toDelete: photosToDelete) {
+                            String fileLocation = toDelete.FileLocation;
+                            File largeImage = new File(fileLocation);
+                            String thumbLocation = fileLocation.substring(0,fileLocation.lastIndexOf('/') + 1);
+                            thumbLocation += "thumb" + fileLocation.substring(fileLocation.lastIndexOf('/') + 1);
+                            File thumbImage = new File(thumbLocation);
+                            largeImage.delete();
+                            thumbImage.delete();
+                        }
                         Utils.database.exhibitDAO().deleteExhibit(exhibit.ID);
                         Intent toCaseDetails = new Intent(ExhibitDetails.this, CaseDetails.class);
                         toCaseDetails.putExtra("CaseID", caseID);
