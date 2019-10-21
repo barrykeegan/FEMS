@@ -162,6 +162,29 @@ public class TakePhoto extends AppCompatActivity implements View.OnClickListener
 
         csPreview = findViewById(R.id.cs_photo_preview);
 
+
+
+        btnTakePhoto =  findViewById(R.id.btn_take_photo_take_photo);
+        btnTakePhoto.setOnClickListener(
+                new View.OnClickListener() {
+                    public void onClick(View v) {
+                        takePhoto();
+                    }
+                }
+        );
+        setPositionChoosersOff();
+        if(displayOverlay)
+        {
+            setOverlayText();
+            setOverlayConstraints();
+            setPositionChooserOn();
+        }
+    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         if (checkCameraHardware(this))
         {
             camera = getCameraInstance(this);
@@ -210,22 +233,6 @@ public class TakePhoto extends AppCompatActivity implements View.OnClickListener
         else
         {
             Toast.makeText(this, "Camera Not Available", Toast.LENGTH_LONG).show();
-        }
-
-        btnTakePhoto =  findViewById(R.id.btn_take_photo_take_photo);
-        btnTakePhoto.setOnClickListener(
-                new View.OnClickListener() {
-                    public void onClick(View v) {
-                        takePhoto();
-                    }
-                }
-        );
-        setPositionChoosersOff();
-        if(displayOverlay)
-        {
-            setOverlayText();
-            setOverlayConstraints();
-            setPositionChooserOn();
         }
     }
 
