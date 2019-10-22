@@ -5,6 +5,9 @@ import android.arch.persistence.room.ForeignKey;
 import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 
+import java.io.File;
+import java.util.List;
+
 import static android.arch.persistence.room.ForeignKey.CASCADE;
 
 @Entity(tableName = "exhibits",
@@ -42,5 +45,30 @@ public class Exhibit {
         this.LocationReceived = LocationReceived;
         this.DateFromCustody = DateFromCustody;
         this.ExhibitTo = ExhibitTo;
+    }
+
+    public void deleteExhibit()
+    {
+        List<Photograph> photosToDelete = Utils.database.photographDAO().getPhotographsForExhibit(ID);
+        for (Photograph photoToDelete: photosToDelete) {
+            photoToDelete.DeletPhotographFiles();
+        }
+
+        String photoDir;
+        if(!ExternalExhibitID.isEmpty() && !LocalExhibitID.isEmpty() )
+        {
+            photoDir = ExternalExhibitID + "_" + LocalExhibitID;
+        }
+        else
+        {
+            photoDir = ExternalExhibitID + LocalExhibitID;
+        }
+        File dirToDelete = new File(Utils.appContext.getFilesDir(), photoDir);
+        if(dirToDelete.exists())
+        {
+            dirToDelete.delete();
+        }
+
+        Utils.database.exhibitDAO().deleteExhibit(ID);
     }
 }

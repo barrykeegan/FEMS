@@ -92,12 +92,13 @@ public class PhotoDetails extends AppCompatActivity {
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
 
                     public void onClick(DialogInterface dialog, int whichButton) {
-                        File largeImage = new File(fileLocation);
+                        Utils.database.photographDAO().getPhotograph(photoID).DeletPhotographFiles();
+                        /*File largeImage = new File(fileLocation);
                         String thumbLocation = fileLocation.substring(0,fileLocation.lastIndexOf('/') + 1);
                         thumbLocation += "thumb" + fileLocation.substring(fileLocation.lastIndexOf('/') + 1);
                         File thumbImage = new File(thumbLocation);
                         largeImage.delete();
-                        thumbImage.delete();
+                        thumbImage.delete();*/
                         Utils.database.photographDAO().deletePhotograph(photoID);
                         PhotoDetails.this.finish();
                     }})

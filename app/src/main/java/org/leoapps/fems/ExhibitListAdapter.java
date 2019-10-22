@@ -103,9 +103,9 @@ public class ExhibitListAdapter extends RecyclerView.Adapter<ExhibitListAdapter.
                     .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
 
                         public void onClick(DialogInterface dialog, int whichButton) {
-                            Utils.database.exhibitDAO().deleteExhibit(
+                            Utils.database.exhibitDAO().getExhibit(
                                     Integer.parseInt(tvExhibitListID.getText().toString())
-                            );
+                                ).deleteExhibit();
                             //https://stackoverflow.com/questions/37339465/recyclerview-does-not-update-after-deleting-an-item-from-sqlite
                             exhibitList.remove(getAdapterPosition());
                             notifyItemRemoved(getAdapterPosition());
