@@ -246,9 +246,6 @@ public class AddExhibit extends AppCompatActivity implements DatePickerDialog.On
 
     private void backToCaseDetails()
     {
-        Intent intent = new Intent(this, CaseDetails.class);
-        intent.putExtra("CaseID", strCaseID);
-        this.startActivity(intent);
         this.finish();
     }
 }

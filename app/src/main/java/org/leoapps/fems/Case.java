@@ -6,6 +6,8 @@ import android.arch.persistence.room.ForeignKey;
 import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 
+import java.util.List;
+
 import static android.arch.persistence.room.ForeignKey.SET_NULL;
 
 @Entity(tableName = "cases",
@@ -35,4 +37,16 @@ public class Case {
         this.Location = Location;
         this.OperationName = OperationName;
     }
+
+    public void deleteCase()
+    {
+        List<Exhibit> exhibitsToDelete = Utils.database.exhibitDAO().getExhibitsForCase(ID);
+        for (Exhibit exhibitToDelete: exhibitsToDelete)
+        {
+            exhibitToDelete.deleteExhibit();
+        }
+
+        Utils.database.caseDAO().deleteCase(ID);
+    }
+
 }

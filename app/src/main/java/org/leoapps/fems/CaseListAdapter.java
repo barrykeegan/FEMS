@@ -92,9 +92,9 @@ public class CaseListAdapter extends RecyclerView.Adapter<CaseListAdapter.ViewHo
                     .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
 
                         public void onClick(DialogInterface dialog, int whichButton) {
-                            Utils.database.caseDAO().deleteCase(
-                                    Integer.parseInt(tvCaseListID.getText().toString())
-                            );
+                            Utils.database.caseDAO().getCase(
+                                    Integer.parseInt( tvCaseListID.getText().toString())
+                                ).deleteCase();
                             //https://stackoverflow.com/questions/37339465/recyclerview-does-not-update-after-deleting-an-item-from-sqlite
                             caseList.remove(getAdapterPosition());
                             notifyItemRemoved(getAdapterPosition());

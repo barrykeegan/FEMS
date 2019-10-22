@@ -155,9 +155,11 @@ public class CaseDetails extends AppCompatActivity {
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
 
                     public void onClick(DialogInterface dialog, int whichButton) {
-                        Utils.database.caseDAO().deleteCase(intCaseID);
-                        Intent toCaseList = new Intent(CaseDetails.this, MainActivity.class);
-                        CaseDetails.this.startActivity(toCaseList);
+                        //call this method to process correct deletion of image files and directories
+                        aCase.deleteCase();
+
+                        /*Intent toCaseList = new Intent(CaseDetails.this, MainActivity.class);
+                        CaseDetails.this.startActivity(toCaseList);*/
                         CaseDetails.this.finish();
                     }})
                 .setNegativeButton(android.R.string.no, null).show();
