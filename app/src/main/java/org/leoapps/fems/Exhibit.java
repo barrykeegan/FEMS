@@ -54,21 +54,6 @@ public class Exhibit {
             photoToDelete.DeletPhotographFiles();
         }
 
-        String photoDir;
-        if(!ExternalExhibitID.isEmpty() && !LocalExhibitID.isEmpty() )
-        {
-            photoDir = ExternalExhibitID + "_" + LocalExhibitID;
-        }
-        else
-        {
-            photoDir = ExternalExhibitID + LocalExhibitID;
-        }
-        File dirToDelete = new File(Utils.appContext.getFilesDir(), photoDir);
-        if(dirToDelete.exists())
-        {
-            dirToDelete.delete();
-        }
-
         Utils.database.exhibitDAO().deleteExhibit(ID);
     }
 }

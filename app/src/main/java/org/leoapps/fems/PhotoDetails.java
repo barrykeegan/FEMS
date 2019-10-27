@@ -93,13 +93,6 @@ public class PhotoDetails extends AppCompatActivity {
 
                     public void onClick(DialogInterface dialog, int whichButton) {
                         Utils.database.photographDAO().getPhotograph(photoID).DeletPhotographFiles();
-                        /*File largeImage = new File(fileLocation);
-                        String thumbLocation = fileLocation.substring(0,fileLocation.lastIndexOf('/') + 1);
-                        thumbLocation += "thumb" + fileLocation.substring(fileLocation.lastIndexOf('/') + 1);
-                        File thumbImage = new File(thumbLocation);
-                        largeImage.delete();
-                        thumbImage.delete();*/
-                        Utils.database.photographDAO().deletePhotograph(photoID);
                         PhotoDetails.this.finish();
                     }})
                 .setNegativeButton(android.R.string.no, null).show();

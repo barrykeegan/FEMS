@@ -56,6 +56,21 @@ public class Photograph {
             }
         }
 
+        //TODO: guard against case where / won't be found in FileLocation, unlikely as it is
+        String photoDir = FileLocation.substring(0,FileLocation.lastIndexOf('/') );
+        photoDir = photoDir.substring(photoDir.lastIndexOf('/') + 1);
+
+        if (photoDir.compareTo("files") != 0)
+        {
+            File dirToDelete = new File(Utils.appContext.getFilesDir(), photoDir);
+            if(dirToDelete.exists() && dirToDelete.listFiles().length == 0)
+            {
+                dirToDelete.delete();
+            }
+        }
+
+
+        Utils.database.photographDAO().deletePhotograph(ID);
         return numDeleted;
     }
 }
