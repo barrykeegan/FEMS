@@ -184,8 +184,6 @@ public class AddCase extends AppCompatActivity  implements  DatePickerDialog.OnD
 
     private void backToCaseList()
     {
-        Intent intent = new Intent(this, MainActivity.class);
-        this.startActivity(intent);
         this.finish();
     }
 }
