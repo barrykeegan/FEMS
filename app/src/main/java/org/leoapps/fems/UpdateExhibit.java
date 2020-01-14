@@ -256,20 +256,6 @@ public class UpdateExhibit extends AppCompatActivity implements DatePickerDialog
 
     private void backToPrevActivity()
     {
-        Intent intent;
-        if(getIntent().getStringExtra("From").equals("CaseDetails"))
-        {
-            intent = new Intent(this, CaseDetails.class);
-            intent.putExtra("CaseID", strCaseID);
-        }
-        else
-        {
-            intent = new Intent(this, ExhibitDetails.class);
-            intent.putExtra("ExhibitID", strExhibitID);
-        }
-        this.startActivity(intent);
         this.finish();
     }
-
-
 }

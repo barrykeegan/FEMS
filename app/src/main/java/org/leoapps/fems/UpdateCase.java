@@ -177,18 +177,6 @@ public class UpdateCase extends AppCompatActivity  implements  DatePickerDialog.
 
     private void backToPrevActivity()
     {
-        Intent intent;
-        if(getIntent().getStringExtra("From").equals("CaseList"))
-        {
-            intent = new Intent(this, MainActivity.class);
-        }
-        else
-        {
-            intent = new Intent(this, CaseDetails.class);
-            intent.putExtra("CaseID", Integer.toString(caseToUpdate.ID));
-        }
-
-        this.startActivity(intent);
         this.finish();
     }
 }
