@@ -145,7 +145,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginTop="10dp">
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp">
             <Button
                 android:id="@+id/btn_add_case_add"
                 android:layout_width="130dp"
@@ -165,6 +166,16 @@
                 android:textColor="#fff"
                 android:text="Discard"/>
         </LinearLayout>
+
+        <Button
+            android:id="@+id/btn_add_case_add_goto_details"
+            android:layout_width="290dp"
+            android:layout_height="44dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:background="@color/colorAccent"
+            android:textColor="#fff"
+            android:text="Add Case and Go To Details"/>
     </LinearLayout>
 
 </ScrollView>

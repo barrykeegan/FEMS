@@ -11,7 +11,7 @@ import java.util.List;
 @Dao
 public interface CaseDAO {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void addCase(Case newCase);
+    long addCase(Case newCase);
 
     @Query("SELECT * FROM cases WHERE ID = :ID")
     Case getCase(long ID);

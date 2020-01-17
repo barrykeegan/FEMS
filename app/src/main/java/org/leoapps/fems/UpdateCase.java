@@ -26,6 +26,7 @@ public class UpdateCase extends AppCompatActivity  implements  DatePickerDialog.
     private Button btnUpdateCase;
     private Button btnDiscard;
     private Button btnDatePicker;
+    private Button btnUpdateCaseGotoDetails;
     private String currentDate;
     private Case caseToUpdate;
 
@@ -48,6 +49,7 @@ public class UpdateCase extends AppCompatActivity  implements  DatePickerDialog.
         btnUpdateCase = findViewById(R.id.btn_update_case_update);
         btnDiscard = findViewById(R.id.btn_update_case_discard);
         btnDatePicker = findViewById(R.id.btn_update_case_date_picker);
+        btnUpdateCaseGotoDetails = findViewById(R.id.btn_update_case_update_goto_details);
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, Utils.strCaseTypes);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -88,6 +90,13 @@ public class UpdateCase extends AppCompatActivity  implements  DatePickerDialog.
             @Override
             public void onClick(View v) {
                 showDatePickerDialog();
+            }
+        });
+
+        btnUpdateCaseGotoDetails.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                updateCaseGotoDetails();
             }
         });
     }
@@ -133,6 +142,20 @@ public class UpdateCase extends AppCompatActivity  implements  DatePickerDialog.
 
     private void updateCase()
     {
+        updateCaseRecord();
+        backToPrevActivity();
+    }
+
+    private void updateCaseGotoDetails() {
+        updateCaseRecord();
+        Intent toCaseDetails = new Intent(this, CaseDetails.class);
+        toCaseDetails.putExtra("CaseID", Long.toString(caseToUpdate.ID) );
+        startActivity(toCaseDetails);
+        this.finish();
+    }
+
+    private void updateCaseRecord()
+    {
         caseToUpdate.ReferenceID = etLocalReference.getText().toString();
         caseToUpdate.ExternalReferenceID = etExternalReference.getText().toString();
         caseToUpdate.CaseType = spnrCaseType.getSelectedItem().toString();
@@ -141,7 +164,6 @@ public class UpdateCase extends AppCompatActivity  implements  DatePickerDialog.
         caseToUpdate.OperationName = etOperation.getText().toString();
 
         Utils.database.caseDAO().updateCase(caseToUpdate);
-        backToPrevActivity();
     }
 
     private void verifyDiscard()
