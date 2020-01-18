@@ -10,8 +10,15 @@
     <string name="title_activity_exhibit_details">FEMS - Exhibit Details</string>
     <string name="value_not_set">Not Set</string>
     <string name="title_activity_case_details">FEMS - Case Details</string>
-    <string name="lbl_case_details_external_reference">External Reference</string>
-    <string name="lbl_case_details_case_type">Case Type</string>
-    <string name="lbl_case_details_case_location">Incident/Search Location</string>
-    <string name="lbl_case_details_case_date">Incident/Search Date</string>
+    <string name="lbl_case_local_reference">Your Case Reference</string>
+    <string name="lbl_case_external_reference">External Case Reference</string>
+    <string name="lbl_case_type">Case Type</string>
+    <string name="lbl_case_date">Incident / Search Date</string>
+    <string name="btn_case_choose_date">Choose Date</string>
+    <string name="lbl_case_location">Incident / Search Location</string>
+    <string name="lbl_case_operation_name">Operation Name</string>
+    <string name="btn_case_add_case">Add Case</string>
+    <string name="btn_case_add_case_goto_details">Add Case and Go to Details</string>
+    <string name="btn_discard">Discard</string>
+
 </resources>
