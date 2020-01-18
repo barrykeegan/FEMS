@@ -19,6 +19,8 @@
     <string name="lbl_case_operation_name">Operation Name</string>
     <string name="btn_case_add_case">Add Case</string>
     <string name="btn_case_add_case_goto_details">Add Case and Go to Details</string>
+    <string name="btn_case_update_case">Update Case</string>
+    <string name="btn_case_update_case_goto_details">Update Case and Go to Details</string>
     <string name="btn_discard">Discard</string>
 
 </resources>
