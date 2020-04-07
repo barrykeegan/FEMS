@@ -78,16 +78,6 @@ public class CaseDetails extends AppCompatActivity {
 
         rvExhibits = findViewById(R.id.rv_case_details_exhibits);
 
-        aCase = Utils.database.caseDAO().getCase(intCaseID);
-
-        tvCaseID.setText(strCaseID);
-        tvLocalRef.setText(aCase.ReferenceID);
-        tvOperation.setText(aCase.OperationName);
-        tvExternalRef.setText(aCase.ExternalReferenceID);
-        tvCaseType.setText(aCase.CaseType);
-        tvLocation.setText(aCase.Location);
-        tvDate.setText(aCase.CaseDate);
-
         ivShareCase.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -117,6 +107,15 @@ public class CaseDetails extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        aCase = Utils.database.caseDAO().getCase(intCaseID);
+
+        tvCaseID.setText(strCaseID);
+        tvLocalRef.setText(aCase.ReferenceID);
+        tvOperation.setText(aCase.OperationName);
+        tvExternalRef.setText(aCase.ExternalReferenceID);
+        tvCaseType.setText(aCase.CaseType);
+        tvLocation.setText(aCase.Location);
+        tvDate.setText(aCase.CaseDate);
         displayExhibitList();
     }
 

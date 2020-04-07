@@ -34,6 +34,7 @@ public class AddCase extends AppCompatActivity  implements  DatePickerDialog.OnD
     private Button btnAddCase;
     private Button btnDiscard;
     private Button btnDatePicker;
+    private Button btnAddCaseGotoDetails;
     private String currentDate;
 
     @Override
@@ -55,6 +56,7 @@ public class AddCase extends AppCompatActivity  implements  DatePickerDialog.OnD
         btnAddCase = findViewById(R.id.btn_add_case_add);
         btnDiscard = findViewById(R.id.btn_add_case_discard);
         btnDatePicker = findViewById(R.id.btn_add_case_date_picker);
+        btnAddCaseGotoDetails = findViewById(R.id.btn_add_case_add_goto_details);
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, Utils.strCaseTypes);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -84,6 +86,14 @@ public class AddCase extends AppCompatActivity  implements  DatePickerDialog.OnD
                 showDatePickerDialog();
             }
         });
+
+        btnAddCaseGotoDetails.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addCaseGotoDetails();
+            }
+        });
+
     }
 
     @Override
@@ -139,6 +149,20 @@ public class AddCase extends AppCompatActivity  implements  DatePickerDialog.OnD
 
     private void addCase()
     {
+        addCaseRecord();
+        backToCaseList();
+    }
+
+    private void addCaseGotoDetails() {
+        long newCaseID = addCaseRecord();
+        Intent toCaseDetails = new Intent(this, CaseDetails.class);
+        toCaseDetails.putExtra("CaseID", Long.toString(newCaseID) );
+        startActivity(toCaseDetails);
+        this.finish();
+    }
+
+    private long addCaseRecord()
+    {
         Case newCase = new Case(
                 0,
                 etLocalReference.getText().toString(),
@@ -148,8 +172,7 @@ public class AddCase extends AppCompatActivity  implements  DatePickerDialog.OnD
                 etLocation.getText().toString(),
                 etOperation.getText().toString()
         );
-        Utils.database.caseDAO().addCase(newCase);
-        backToCaseList();
+        return Utils.database.caseDAO().addCase(newCase);
     }
 
     private void verifyDiscard()
