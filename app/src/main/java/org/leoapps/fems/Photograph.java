@@ -21,6 +21,9 @@ public class Photograph {
     public int ID;
     public int ExhibitID;
     public String DateTimeTaken;
+    //TODO: add Thumbfile location to class
+    //TODO: add directory location to class
+    //TODO: Will require a change to room revision which will require  an update rule to handle the records without this column
     public String FileLocation;
 
     public Photograph(int ID, int ExhibitID, String DateTimeTaken, String FileLocation)
