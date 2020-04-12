@@ -203,9 +203,7 @@ public class TakePhoto extends AppCompatActivity implements View.OnClickListener
 
             camera.setParameters(params);
 
-            mPreview = new CameraPreview(this, camera);
-            flCameraPreview = findViewById(R.id.fl_take_photo_camera_preview);
-            flCameraPreview.addView(mPreview);
+            establishPreview();
 
             flCameraPreview.setOnTouchListener( new View.OnTouchListener() {
                 @Override
@@ -233,6 +231,13 @@ public class TakePhoto extends AppCompatActivity implements View.OnClickListener
         {
             Toast.makeText(this, "Camera Not Available", Toast.LENGTH_LONG).show();
         }
+    }
+
+    private void establishPreview()
+    {
+        mPreview = new CameraPreview(this, camera);
+        flCameraPreview = findViewById(R.id.fl_take_photo_camera_preview);
+        flCameraPreview.addView(mPreview);
     }
 
     public byte[] addOverlayText(byte[] data, String textToAdd)
@@ -295,10 +300,10 @@ public class TakePhoto extends AppCompatActivity implements View.OnClickListener
     private void takePhoto() {
         Camera.PictureCallback pictureCB = new Camera.PictureCallback() {
             public void onPictureTaken(final byte[] data, Camera cam) {
-                new Thread(new Runnable() {
+                /*new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        //Handler handler = new Handler(Looper.getMainLooper());
+                        //Handler handler = new Handler(Looper.getMainLooper());*/
 
                         File[] picFiles = getOutputMediaFile(MEDIA_TYPE_IMAGE, filePrefix);
                         if (picFiles[0] == null || picFiles[1] == null) {
@@ -373,12 +378,13 @@ public class TakePhoto extends AppCompatActivity implements View.OnClickListener
                             //Log.e(TAG, "I/O error writing file: " + e.getMessage());
                             e.getStackTrace();
                         }
+                        establishPreview();
                     }
-                }).start();
+                /*}).start();*/
 
 
-            }
-        };
+            };
+        /*};*/
         camera.takePicture(null, null, pictureCB);
     }
 
